@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spillmakeren | EdTechStine</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blush:#FDEDF3;--white:#FFFFFF;--hotpink:#FF1D8E;--magenta:#B8116E;
+    --ink:#2B1826;--ink-soft:#5C4756;--softpink:#F6CFE2;--line:#F1D3E3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--white);line-height:1.6;}
+  h1,h2,.display{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px;}
+  header{background:var(--blush);padding:56px 0 44px;border-bottom:1px solid var(--line);}
+  .back-link{display:inline-block;font-size:0.9rem;font-weight:600;color:var(--magenta);text-decoration:none;margin-bottom:18px;}
+  .back-link:hover{color:var(--hotpink);}
+  .eyebrow{display:inline-block;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--hotpink);margin-bottom:14px;}
+  h1{font-size:clamp(2rem,4vw,2.6rem);line-height:1.15;margin-bottom:14px;}
+  header p{color:var(--ink-soft);font-size:1.05rem;max-width:56ch;}
+  main{padding:44px 0 90px;}
+  h2.section-title{font-size:1.3rem;margin-bottom:16px;}
+  .steps-mini{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;}
+  .step-mini{display:flex;gap:12px;align-items:flex-start;background:var(--blush);border-radius:14px;padding:14px 18px;}
+  .step-mini .num{font-family:'Fraunces',serif;font-weight:600;color:var(--hotpink);font-size:1.1rem;flex-shrink:0;}
+  .step-mini p{color:var(--ink-soft);font-size:0.93rem;margin:0;}
+  .step-mini strong{color:var(--ink);}
+
+  .chat-window{
+    background:var(--blush);border-radius:18px;padding:20px;
+    max-height:460px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
+    margin-bottom:16px;scroll-behavior:smooth;border:1px solid var(--line);
+  }
+  .msg{max-width:82%;padding:10px 15px;border-radius:16px;font-size:0.9rem;line-height:1.5;opacity:0;animation:msgIn .35s ease forwards;}
+  @keyframes msgIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .msg.bot{align-self:flex-start;background:var(--white);border:1px solid var(--line);border-bottom-left-radius:4px;white-space:pre-line;}
+  .msg.user{align-self:flex-end;background:var(--hotpink);color:var(--white);border-bottom-right-radius:4px;}
+  .typing{align-self:flex-start;display:flex;gap:4px;padding:11px 15px;background:var(--white);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:4px;opacity:0;animation:msgIn .3s ease forwards;}
+  .typing span{width:6px;height:6px;border-radius:50%;background:var(--softpink);animation:blink 1.1s infinite ease-in-out;}
+  .typing span:nth-child(2){animation-delay:.15s;}
+  .typing span:nth-child(3){animation-delay:.3s;}
+  @keyframes blink{0%,80%,100%{opacity:.3;}40%{opacity:1;}}
+  .chat-replay{
+    display:inline-flex;align-items:center;gap:8px;background:var(--white);
+    border:1.5px solid var(--softpink);color:var(--magenta);font-weight:600;
+    font-size:0.9rem;padding:10px 20px;border-radius:100px;cursor:pointer;transition:border-color .2s;
+  }
+  .chat-replay:hover{border-color:var(--hotpink);}
+  footer{background:var(--blush);padding:36px 0;text-align:center;color:var(--ink-soft);font-size:0.85rem;border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="back-link" href="index.html">← Tilbake til EdTechStine</a>
+    <span class="eyebrow">Ressurs · Bygg dine egne spill</span>
+    <h1>Spillmakeren</h1>
+    <p>En praterobot som hjelper deg å lage ditt eget interaktive læringsspill – helt uten å kunne kode. Den stiller fire enkle spørsmål, ett om gangen, og genererer deretter en komplett, kjørbar spillfil basert på svarene dine.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <h2 class="section-title">Slik fungerer den</h2>
+  <div class="steps-mini">
+    <div class="step-mini"><span class="num">1</span><p><strong>Spilltype</strong> – quiz, sortering eller scenario?</p></div>
+    <div class="step-mini"><span class="num">2</span><p><strong>Innhold</strong> – hvilket fagtema, spørsmål og riktige svar?</p></div>
+    <div class="step-mini"><span class="num">3</span><p><strong>Design</strong> – farger, tema og målgruppe (eller «bestem selv»)</p></div>
+    <div class="step-mini"><span class="num">4</span><p><strong>Ekstra funksjoner</strong> – konfetti, forklaringer, fremgangsmåler og mer</p></div>
+  </div>
+
+  <h2 class="section-title">Eksempel på en samtale</h2>
+  <div class="chat-window" id="chat-window-sm"></div>
+  <button class="chat-replay" onclick="playChat('chat-window-sm', chatScriptSM)">▶ Spill av samtalen</button>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 EdTechStine — Spillmakeren</div>
+</footer>
+
+<script>
+  const chatScriptSM = [
+    {role:'bot', text:'Hei! 🎮 Jeg hjelper deg med å lage ditt eget interaktive læringsspill. Jeg stiller deg fire korte spørsmål – ett om gangen – og lager deretter spillet for deg. La oss begynne!\n\nHvilken type spill vil du lage?\n🎯 Quiz\n🗂️ Sortering\n💬 Scenario'},
+    {role:'user', text:'Jeg vil lage en quiz med 8 spørsmål.'},
+    {role:'bot', text:'Bra! Da lager vi en quiz med 8 spørsmål. 🎯\n\nHva skal spillet handle om? Beskriv gjerne faglig tema, konkrete spørsmål og hvilke svar som er riktige.'},
+    {role:'user', text:'Det skal handle om barns rettigheter og medvirkning i barnehagen, med spørsmål om FNs barnekonvensjon.'},
+    {role:'bot', text:'Flott tema! 📚\n\nHvordan vil du at spillet skal se ut? Farger, tema, og er det for barn eller voksne? Usikker? Skriv «bestem selv».'},
+    {role:'user', text:'Bestem selv.'},
+    {role:'bot', text:'Vil du ha noen av disse funksjonene?\n✅ Konfetti og score\n✅ Forklaring etter hvert svar\n✅ Fremgangsmåler\n✅ Tilfeldig rekkefølge\n✅ Tidsbegrensning\n\nEller skriv «standard» for de tre første.'},
+    {role:'user', text:'Standard.'},
+    {role:'bot', text:'Jeg lager nå en quiz med 8 spørsmål om barns rettigheter og medvirkning, med konfetti, forklaringer underveis og fremgangsmåler. Genererer spillet ditt! 🎮✨'}
+  ];
+
+  function playChat(windowId, script){
+    const win = document.getElementById(windowId);
+    win.innerHTML = '';
+    let delay = 0;
+    script.forEach((step) => {
+      const typingTime = 500 + Math.min(step.text.length * 9, 1100);
+      delay += 400;
+      setTimeout(() => {
+        const typing = document.createElement('div');
+        typing.className = 'typing';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        win.appendChild(typing);
+        win.scrollTop = win.scrollHeight;
+        setTimeout(() => {
+          typing.remove();
+          const msg = document.createElement('div');
+          msg.className = 'msg ' + step.role;
+          msg.textContent = step.text;
+          win.appendChild(msg);
+          win.scrollTop = win.scrollHeight;
+        }, typingTime);
+      }, delay);
+      delay += typingTime;
+    });
+  }
+
+  const smObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if(entry.isIntersecting){
+        playChat('chat-window-sm', chatScriptSM);
+        smObserver.disconnect();
+      }
+    });
+  }, {threshold:0.3});
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('chat-window-sm');
+    if(el) smObserver.observe(el);
+  });
+</script>
+</body>
+</html>

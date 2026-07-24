@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gråsonegalleriet – digital dømmekraft | EdTechStine</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blush:#FDEDF3;--white:#FFFFFF;--hotpink:#FF1D8E;--magenta:#B8116E;
+    --ink:#2B1826;--ink-soft:#5C4756;--softpink:#F6CFE2;--line:#F1D3E3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--white);line-height:1.6;}
+  h1,h2,.display{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 24px;}
+  header{background:var(--blush);padding:56px 0 44px;border-bottom:1px solid var(--line);}
+  .back-link{display:inline-block;font-size:0.9rem;font-weight:600;color:var(--magenta);text-decoration:none;margin-bottom:18px;}
+  .back-link:hover{color:var(--hotpink);}
+  .eyebrow{display:inline-block;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--hotpink);margin-bottom:14px;}
+  h1{font-size:clamp(2rem,4vw,2.6rem);line-height:1.15;margin-bottom:14px;}
+  header p{color:var(--ink-soft);font-size:1.05rem;max-width:56ch;}
+  .intro-box{
+    background:var(--white);border:1.5px solid var(--hotpink);border-radius:16px;
+    padding:20px 24px;margin:36px 0 8px;font-weight:600;font-size:1.05rem;color:var(--magenta);
+  }
+  main{padding:44px 0 90px;}
+  .station{
+    border:1px solid var(--line);border-radius:20px;padding:28px;margin-bottom:24px;
+    position:relative;overflow:hidden;
+  }
+  .station::before{content:"";position:absolute;top:0;left:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--hotpink),var(--softpink));}
+  .station-num{display:inline-flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--hotpink);margin-bottom:8px;}
+  .station h2{font-size:1.3rem;margin-bottom:14px;}
+  .block-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--magenta);margin-bottom:6px;margin-top:16px;}
+  .block-label:first-of-type{margin-top:0;}
+  .station p.body-text{color:var(--ink-soft);font-size:0.97rem;}
+  footer{background:var(--blush);padding:36px 0;text-align:center;color:var(--ink-soft);font-size:0.85rem;border-top:1px solid var(--line);}
+  @media (max-width:600px){.station{padding:22px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="back-link" href="index.html">← Tilbake til EdTechStine</a>
+    <span class="eyebrow">Ressurs · Digital dømmekraft</span>
+    <h1>Gråsonegalleriet</h1>
+    <p>Et stasjonsbasert undervisningsopplegg der elever på barne- og ungdomsarbeiderfaget møter seks virkelige gråsone-dilemmaer knyttet til digital dømmekraft i yrkesutøvelsen – og øver på å tenke selv før de handler.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro-box">💡 Tenk alltid selv før dere bruker KI</div>
+
+  <div class="station">
+    <div class="station-num">Stasjon 1 · Personvern og verdighet</div>
+    <h2>Deling av bilder</h2>
+    <div class="block-label">Dilemma</div>
+    <p class="body-text">En gruppe barn har laget et flott prosjekt. Du tar et bilde for å dokumentere arbeidet til årsrapporten. Et av barna gjør en morsom grimase i bakgrunnen som gjør bildet "perfekt" for sosiale medier. Foreldrene har gitt generelt samtykke til fotografering på institusjonen.</p>
+    <div class="block-label">Spørsmål</div>
+    <p class="body-text">Kan du legge dette ut på institusjonens Facebook-side? Hva med din private Instagram hvis du dekker til ansiktet med en emoji? Hva sier yrkesetikken om barnets verdighet her?</p>
+  </div>
+
+  <div class="station">
+    <div class="station-num">Stasjon 2 · Informasjonssikkerhet</div>
+    <h2>Kildekritikk</h2>
+    <div class="block-label">Dilemma</div>
+    <p class="body-text">En forelder deler en bekymring i en uformell Facebook-gruppe for ansatte om en ny "farlig trend" på TikTok som visstnok oppfordrer barn til selvskading. Du finner ingen offisiell informasjon fra politi eller myndigheter, men videoen ser skremmende ut.</p>
+    <div class="block-label">Spørsmål</div>
+    <p class="body-text">Velger du å advare alle foreldrene med en gang "for sikkerhets skyld", eller venter du på bekreftelse? Hvilke konsekvenser kan unødig frykt skape i barnegruppa og foreldregruppa?</p>
+  </div>
+
+  <div class="station">
+    <div class="station-num">Stasjon 3 · Digital profesjonalitet</div>
+    <h2>Ansvar og respekt</h2>
+    <div class="block-label">Dilemma</div>
+    <p class="body-text">Du oppdager at en kollega har lagt ut en video på Snapchat fra pauserommet der hen "mimer" og tuller med en spesiell hendelse som skjedde med et utfordrende barn tidligere på dagen. Ingen navn nevnes, men kolleger skjønner hvem det er snakk om.</p>
+    <div class="block-label">Spørsmål</div>
+    <p class="body-text">Er dette et brudd på taushetsplikten, eller en legitim måte å "blåse ut" på etter en tøff dag? Hvordan bør du som kollega håndtere dette?</p>
+  </div>
+
+  <div class="station">
+    <div class="station-num">Stasjon 4 · Lovlig bruk av materiale</div>
+    <h2>Opphavsrett</h2>
+    <div class="block-label">Dilemma</div>
+    <p class="body-text">Du skal lage et aktivitetsopplegg og trenger musikk og bilder av kjente figurer (f.eks. Disney eller populære spillkarakterer). Du finner alt du trenger på YouTube og Google Bilder.</p>
+    <div class="block-label">Spørsmål</div>
+    <p class="body-text">Er det greit å bruke dette fritt i pedagogisk sammenheng? Hvilke signaler sender vi barna om respekt for andres åndsverk hvis vi lærer dem at "alt på nettet er gratis"?</p>
+  </div>
+
+  <div class="station">
+    <div class="station-num">Stasjon 5 · Taushetsplikt og grenser</div>
+    <h2>Lover og regler</h2>
+    <div class="block-label">Dilemma</div>
+    <p class="body-text">En tidligere elev/barn (nå 13 år) sender deg en venneforespørsel på sosiale medier eller sender en privat melding for å "snakke litt" fordi hen har det vanskelig hjemme og stoler på deg.</p>
+    <div class="block-label">Spørsmål</div>
+    <p class="body-text">Hvor går grensen mellom å være en støttende voksen og det å bryte profesjonelle retningslinjer for digital kontakt? Hva er den tryggeste fremgangsmåten for både deg og barnet?</p>
+  </div>
+
+  <div class="station">
+    <div class="station-num">Stasjon 6 · Modellering</div>
+    <h2>Deltakelse med respekt</h2>
+    <div class="block-label">Dilemma</div>
+    <p class="body-text">Du observerer barn som spiller online. De bruker aggressivt språk ("noob", "trash", "L-ratio") som er "vanlig" i spillkulturen, men stemningen begynner å bli dårlig.</p>
+    <div class="block-label">Spørsmål</div>
+    <p class="body-text">Hvordan griper du inn uten å virke som en "festbrems" som ikke skjønner spillkultur? Hvordan veileder du dem til å se forskjellen på sjargong og mangel på respekt?</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 EdTechStine — Gråsonegalleriet</div>
+</footer>
+
+</body>
+</html>
