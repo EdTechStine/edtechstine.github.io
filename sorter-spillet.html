@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brukermedvirkning mål 13 og rettigheter i arbeidslivet mål 26 (VG3 BUA)</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pink:#FF6BAE;--pink-dark:#D4307E;--pink-bg:#FFF0F8;--green:#4AA83C;--green-dark:#2A6808;--green-bg:#F0FFF0;--blue:#3A94C8;--blue-bg:#EAF5FF;--yellow:#FFE066;--yellow-dk:#9A5800;--dark:#1A2A1A}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#B8E4F9 0%,#D8F4FF 35%,#E8FBE8 70%,#C8F0C0 100%);min-height:100vh;padding:20px 16px 80px;position:relative;overflow-x:hidden}
+.cloud{position:fixed;background:#fff;border-radius:40px;opacity:.85;animation:drift linear infinite;pointer-events:none;z-index:0}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+.c1{width:100px;height:33px;top:5%;left:-120px;animation-duration:30s}
+.c1::before{width:50px;height:50px;top:-25px;left:10px}.c1::after{width:33px;height:33px;top:-17px;left:48px}
+.c2{width:70px;height:23px;top:13%;left:-90px;animation-duration:42s;animation-delay:-10s;opacity:.6}
+.c2::before{width:36px;height:36px;top:-18px;left:8px}.c2::after{width:24px;height:24px;top:-12px;left:34px}
+@keyframes drift{from{left:-200px}to{left:110%}}
+.sun{position:fixed;top:12px;right:18px;font-size:48px;animation:sway 4s ease-in-out infinite;pointer-events:none;z-index:0}
+@keyframes sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(18deg)}}
+.grass{position:fixed;bottom:0;left:0;right:0;height:48px;background:#5cb85c;z-index:0;clip-path:polygon(0% 50%,2% 10%,4% 50%,6% 8%,8% 50%,10% 28%,12% 50%,14% 12%,16% 50%,18% 35%,20% 50%,22% 18%,24% 50%,26% 6%,28% 50%,30% 24%,32% 50%,34% 40%,36% 50%,38% 14%,40% 50%,42% 30%,44% 50%,46% 10%,48% 50%,50% 38%,52% 50%,54% 20%,56% 50%,58% 12%,60% 50%,62% 26%,64% 50%,66% 8%,68% 50%,70% 36%,72% 50%,74% 18%,76% 50%,78% 10%,80% 50%,82% 42%,84% 50%,86% 20%,88% 50%,90% 6%,92% 50%,94% 32%,96% 50%,98% 14%,100% 50%,100% 100%,0% 100%)}
+.flowers{position:fixed;bottom:44px;left:0;right:0;display:flex;justify-content:space-around;pointer-events:none;z-index:0;font-size:20px}
+.flower{animation:bobble 3s ease-in-out infinite}
+@keyframes bobble{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.wrapper{position:relative;z-index:1;max-width:860px;margin:0 auto}
+.game-header{text-align:center;margin-bottom:18px}
+.game-title{font-family:'Fredoka One',cursive;font-size:40px;color:var(--pink-dark);line-height:1;text-shadow:2px 3px 0 var(--pink)}
+.game-sub{font-size:14px;font-weight:700;color:var(--green-dark);margin:6px 0}
+.score-bar{display:flex;gap:10px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.score-pill{background:#fff;border-radius:20px;padding:6px 18px;font-weight:800;font-size:13px;border:2px solid;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.sp-green{color:var(--green-dark);border-color:var(--green)}
+.sp-pink{color:var(--pink-dark);border-color:var(--pink)}
+.sp-yellow{color:var(--yellow-dk);border-color:var(--yellow)}
+
+.round-btns{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.round-btn{background:#fff;border:2.5px solid #C8EFC0;border-radius:20px;padding:8px 18px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all .15s}
+.round-btn.active{background:var(--green-bg);border-color:var(--green);color:var(--green-dark)}
+.round-btn:hover{border-color:var(--green);background:var(--green-bg)}
+
+.cards-bank{background:rgba(255,255,255,.88);border-radius:20px;padding:16px;min-height:100px;border:2.5px dashed #A0D860;margin-bottom:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;transition:background .2s}
+.cards-bank.drag-over{background:rgba(160,216,96,.25)}
+
+.drag-card{background:#fff;border:2.5px solid #C8EFC0;border-radius:14px;padding:10px 14px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--dark);cursor:grab;user-select:none;transition:transform .15s,box-shadow .15s;box-shadow:0 2px 8px rgba(0,0,0,.1);max-width:200px;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px}
+.drag-card:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.15);border-color:var(--blue)}
+.drag-card.dragging{opacity:.5;transform:scale(.96)}
+.drag-card.correct-placed{background:#CCFFE0;border-color:#28A860;color:#0A5E28;cursor:default;animation:placed .3s}
+.drag-card.wrong-placed{background:#FFE0E0;border-color:#E03030;color:#8A0808;animation:shake .3s}
+@keyframes placed{0%{transform:scale(.9)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.drop-zones{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.drop-zone{background:rgba(255,255,255,.9);border-radius:20px;padding:16px;min-height:160px;border:3px dashed;transition:background .2s;position:relative}
+.dz-green{border-color:var(--green)}
+.dz-pink{border-color:var(--pink)}
+.dz-blue{border-color:var(--blue)}
+.dz-yellow{border-color:#FFC400}
+.drop-zone.drag-over-zone{opacity:.85;transform:scale(1.01)}
+.dz-label{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.dz-green .dz-label{color:var(--green-dark)}
+.dz-pink .dz-label{color:var(--pink-dark)}
+.dz-blue .dz-label{color:var(--blue)}
+.dz-yellow .dz-label{color:var(--yellow-dk)}
+.dz-cards{display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+.drop-zones.four-cols{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+
+.feedback-banner{border-radius:16px;padding:14px 18px;font-weight:800;font-size:14px;text-align:center;margin-bottom:16px;display:none}
+.fb-good{background:#D8FFE8;color:#0A5E28;border:2px solid #40C870}
+.fb-bad{background:#FFE8E8;color:#880808;border:2px solid #FF8080}
+.check-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:50px;padding:13px;font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;box-shadow:0 3px 0 var(--green-dark)}
+.check-btn:hover{transform:translateY(-1px)}
+.next-round-btn{width:100%;background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;border:none;border-radius:50px;padding:13px;font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;box-shadow:0 3px 0 var(--pink-dark);display:none;margin-top:10px}
+.confetti-piece{position:fixed;pointer-events:none;border-radius:2px;animation:fall linear forwards;z-index:100}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@media(max-width:560px){.drop-zones{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="cloud c1"></div><div class="cloud c2"></div>
+<div class="sun">☀️</div>
+<div class="grass"></div>
+<div class="flowers">
+<span class="flower" style="animation-delay:0s">🌷</span><span class="flower" style="animation-delay:.4s">🌼</span>
+<span class="flower" style="animation-delay:.8s">🌸</span><span class="flower" style="animation-delay:1.2s">🌻</span>
+<span class="flower" style="animation-delay:1.6s">🌹</span><span class="flower" style="animation-delay:.2s">🌼</span>
+</div>
+
+<div class="wrapper">
+<div class="game-header">
+  <div class="game-title">🌿 Brukermedvirkning mål 13 og rettigheter i arbeidslivet mål 26 (VG3 BUA)</div>
+  <div class="game-sub">Dra kortene til riktig kategori · Mål 13 og mål 26</div>
+</div>
+<div class="score-bar">
+  <span class="score-pill sp-green" id="correct-count">✅ Riktige: 0</span>
+  <span class="score-pill sp-pink" id="wrong-count">❌ Feil: 0</span>
+  <span class="score-pill sp-yellow" id="round-display">Runde 1 av 3</span>
+</div>
+<div class="round-btns">
+  <button class="round-btn active" onclick="loadRound(0)">Runde 1: Rettigheter & plikter</button>
+  <button class="round-btn" onclick="loadRound(1)">Runde 2: Medvirkning</button>
+  <button class="round-btn" onclick="loadRound(2)">Runde 3: Norsk modell</button>
+</div>
+
+<div class="cards-bank" id="bank" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dropToBank(event)">
+</div>
+
+<div class="drop-zones" id="drop-zones-container">
+</div>
+
+<div class="feedback-banner" id="feedback"></div>
+<button class="check-btn" onclick="checkAnswers()">🌸 Sjekk svarene!</button>
+<button class="next-round-btn" id="next-round-btn" onclick="nextRound()">Neste runde →</button>
+</div>
+
+<script>
+const rounds=[
+  {title:"Runde 1: Rettigheter & plikter i arbeidslivet",
+   zones:[
+    {id:"rettighet",label:"🛡️ Rettighet",cls:"dz-green",desc:"Noe du HAR KRAV PÅ som arbeidstaker"},
+    {id:"plikt",label:"📌 Plikt",cls:"dz-pink",desc:"Noe du ER PLIKTIG TIL som arbeidstaker"},
+   ],
+   cards:[
+    {id:"c1",text:"Skriftlig arbeidsavtale",emoji:"📄",correct:"rettighet"},
+    {id:"c2",text:"Møte presis",emoji:"⏰",correct:"plikt"},
+    {id:"c3",text:"Ferie (25 dager/år)",emoji:"🏖️",correct:"rettighet"},
+    {id:"c4",text:"Taushetsplikt",emoji:"🤫",correct:"plikt"},
+    {id:"c5",text:"Sykelønn",emoji:"🏥",correct:"rettighet"},
+    {id:"c6",text:"Varsle om sykdom",emoji:"📱",correct:"plikt"},
+    {id:"c7",text:"Organisere seg i fagforening",emoji:"✊",correct:"rettighet"},
+    {id:"c8",text:"Utføre arbeidet lojalt",emoji:"🎯",correct:"plikt"},
+    {id:"c9",text:"Overtidsbetaling",emoji:"💰",correct:"rettighet"},
+    {id:"c10",text:"Bidra til godt arbeidsmiljø",emoji:"🤝",correct:"plikt"},
+   ]
+  },
+  {title:"Runde 2: Individuell og systemmedvirkning",
+   zones:[
+    {id:"individuell",label:"👤 Individuell medvirkning",cls:"dz-blue",desc:"Den enkelt bruker påvirker sin egen sak"},
+    {id:"system",label:"🏛️ Systemmedvirkning",cls:"dz-yellow",desc:"Brukere påvirker hele tjenestens organisering"},
+   ],
+   cards:[
+    {id:"d1",text:"Barnet velger aktivitet i dag",emoji:"🎮",correct:"individuell"},
+    {id:"d2",text:"Foreldreråd bestemmer regler for SFO",emoji:"📋",correct:"system"},
+    {id:"d3",text:"Ungdom sier hva de vil jobbe med i møte",emoji:"🗣️",correct:"individuell"},
+    {id:"d4",text:"Brukerråd gir innspill til ny plan",emoji:"🏛️",correct:"system"},
+    {id:"d5",text:"Barn velger hvem de vil leke med",emoji:"🧒",correct:"individuell"},
+    {id:"d6",text:"Foresatte deltar i utforming av årsplan",emoji:"📅",correct:"system"},
+    {id:"d7",text:"Oda sier hun ikke vil delta i aktiviteten",emoji:"✋",correct:"individuell"},
+    {id:"d8",text:"Elevrådet foreslår endring i skoledagen",emoji:"🏫",correct:"system"},
+   ]
+  },
+  {title:"Runde 3: Hvem tilhører hvem i den norske modellen?",
+   zones:[
+    {id:"arbeidsgiver",label:"🏢 Arbeidsgiver-siden",cls:"dz-blue",desc:"Organisasjoner som representerer arbeidsgivere"},
+    {id:"arbeidstaker",label:"👷 Arbeidstaker-siden",cls:"dz-green",desc:"Organisasjoner som representerer arbeidstakere"},
+    {id:"stat",label:"🏛️ Staten",cls:"dz-yellow",desc:"Lovgivning og mekling"},
+    {id:"lov",label:"📋 Lovverk",cls:"dz-pink",desc:"Lover som regulerer arbeidslivet"},
+   ],
+   cards:[
+    {id:"e1",text:"LO",emoji:"✊",correct:"arbeidstaker"},
+    {id:"e2",text:"NHO",emoji:"🏢",correct:"arbeidsgiver"},
+    {id:"e3",text:"Arbeidsmiljøloven",emoji:"📋",correct:"lov"},
+    {id:"e4",text:"Unio",emoji:"✊",correct:"arbeidstaker"},
+    {id:"e5",text:"KS",emoji:"🏛️",correct:"arbeidsgiver"},
+    {id:"e6",text:"Ferieloven",emoji:"🏖️",correct:"lov"},
+    {id:"e7",text:"Riksmekleren",emoji:"⚖️",correct:"stat"},
+    {id:"e8",text:"Fagforbundet",emoji:"👷",correct:"arbeidstaker"},
+    {id:"e9",text:"Spekter",emoji:"🏢",correct:"arbeidsgiver"},
+    {id:"e10",text:"Stortinget",emoji:"🇳🇴",correct:"stat"},
+   ]
+  }
+];
+
+let currentRound=0,correctTotal=0,wrongTotal=0,draggedId=null;
+
+function loadRound(idx){
+  currentRound=idx;
+  document.querySelectorAll('.round-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  const round=rounds[idx];
+  document.getElementById('round-display').textContent='Runde '+(idx+1)+' av '+rounds.length;
+  const fb=document.getElementById('feedback');
+  fb.style.display='none';
+  document.getElementById('next-round-btn').style.display='none';
+  const dzc=document.getElementById('drop-zones-container');
+  dzc.className='drop-zones'+(round.zones.length===4?' four-cols':'');
+  dzc.innerHTML=round.zones.map(z=>`
+    <div class="drop-zone ${z.cls}" id="zone-${z.id}" ondragover="dzOver(event,this)" ondragleave="dzLeave(this)" ondrop="dropToZone(event,'${z.id}')">
+      <div class="dz-label">${z.label}</div>
+      <div style="font-size:11px;color:#888;font-weight:700;margin-bottom:10px">${z.desc}</div>
+      <div class="dz-cards" id="cards-${z.id}"></div>
+    </div>`).join('');
+  const shuffled=[...round.cards].sort(()=>Math.random()-.5);
+  document.getElementById('bank').innerHTML=shuffled.map(c=>`
+    <div class="drag-card" id="${c.id}" draggable="true" ondragstart="dragStart(event,'${c.id}')">${c.emoji} ${c.text}</div>`).join('');
+}
+
+function dragStart(e,id){draggedId=id;setTimeout(()=>document.getElementById(id)?.classList.add('dragging'),0)}
+function dzOver(e,el){e.preventDefault();el.classList.add('drag-over','drag-over-zone')}
+function dzLeave(el){el.classList.remove('drag-over','drag-over-zone')}
+function dropToZone(e,zoneId){
+  e.preventDefault();
+  const el=document.getElementById(draggedId);
+  if(!el||el.classList.contains('correct-placed'))return;
+  el.classList.remove('dragging');
+  document.getElementById('bank').classList.remove('drag-over');
+  const target=document.getElementById('cards-'+zoneId);
+  if(target)target.appendChild(el);
+  dzLeave(document.getElementById('zone-'+zoneId));
+}
+function dropToBank(e){
+  e.preventDefault();
+  const el=document.getElementById(draggedId);
+  if(!el||el.classList.contains('correct-placed'))return;
+  el.classList.remove('dragging','wrong-placed');
+  document.getElementById('bank').appendChild(el);
+  document.getElementById('bank').classList.remove('drag-over');
+}
+
+function checkAnswers(){
+  const round=rounds[currentRound];
+  let correct=0,wrong=0,total=0;
+  round.zones.forEach(z=>{
+    const container=document.getElementById('cards-'+z.id);
+    if(!container)return;
+    container.querySelectorAll('.drag-card').forEach(card=>{
+      total++;
+      const cardData=round.cards.find(c=>c.id===card.id);
+      if(cardData&&cardData.correct===z.id){correct++;card.classList.add('correct-placed');card.draggable=false}
+      else{wrong++;card.classList.add('wrong-placed');setTimeout(()=>{card.classList.remove('wrong-placed');document.getElementById('bank').appendChild(card)},700)}
+    });
+  });
+  correctTotal+=correct;wrongTotal+=wrong;
+  document.getElementById('correct-count').textContent='✅ Riktige: '+correctTotal;
+  document.getElementById('wrong-count').textContent='❌ Feil: '+wrongTotal;
+  const fb=document.getElementById('feedback');
+  const bankCards=document.getElementById('bank').querySelectorAll('.drag-card:not(.correct-placed)').length;
+  if(bankCards===0&&total===round.cards.length){
+    fb.className='feedback-banner fb-good';
+    fb.textContent='🎉 Perfekt! Alle korrekt plassert!';
+    if(currentRound<rounds.length-1)document.getElementById('next-round-btn').style.display='block';
+    launchConfetti();
+  } else if(correct>0){
+    fb.className='feedback-banner fb-good';
+    fb.textContent='✅ '+correct+' riktige! De feil-plasserte kortene er tilbake i bunken – prøv igjen!';
+  } else {
+    fb.className='feedback-banner fb-bad';
+    fb.textContent='❌ Ingen riktige denne gangen. Se på kategori-beskrivelsene og prøv igjen!';
+  }
+  fb.style.display='block';
+}
+
+function nextRound(){
+  if(currentRound<rounds.length-1)loadRound(currentRound+1);
+}
+
+function launchConfetti(){const colors=['#FF6BAE','#4AA83C','#FFE066','#3A94C8'];for(let i=0;i<50;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText='left:'+Math.random()*100+'vw;width:'+(6+Math.random()*8)+'px;height:'+(6+Math.random()*8)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-duration:'+(1.5+Math.random()*2)+'s;animation-delay:'+(Math.random()*.5)+'s';document.body.appendChild(el);el.addEventListener('animationend',()=>el.remove())}}
+
+let touchCard=null;
+document.addEventListener('touchstart',e=>{const card=e.target.closest('.drag-card');if(card&&!card.classList.contains('correct-placed')){touchCard=card;card.classList.add('dragging')}},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(!touchCard)return;
+  touchCard.classList.remove('dragging');
+  const t=e.changedTouches[0];
+  const el=document.elementFromPoint(t.clientX,t.clientY);
+  const zone=el?.closest('.drop-zone');
+  const bank=el?.closest('#bank');
+  if(zone){const zoneId=zone.id.replace('zone-','');document.getElementById('cards-'+zoneId)?.appendChild(touchCard)}
+  else if(bank){document.getElementById('bank').appendChild(touchCard)}
+  touchCard=null;
+},{passive:true});
+
+loadRound(0);
+</script>
+</body>
+</html>

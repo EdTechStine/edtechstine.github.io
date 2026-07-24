@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brukermedvirkning mål 13 og rettigheter i arbeidslivet mål 26 (VG3 BUA)</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pink:#FF6BAE;--pink-dark:#D4307E;--pink-bg:#FFF0F8;--green:#4AA83C;--green-dark:#2A6808;--green-bg:#F0FFF0;--blue:#3A94C8;--blue-bg:#EAF5FF;--yellow:#FFE066;--yellow-dk:#9A5800;--dark:#1A2A1A;--muted:#5A7A5A}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#B8E4F9 0%,#D8F4FF 35%,#E8FBE8 70%,#C8F0C0 100%);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 80px;position:relative;overflow-x:hidden}
+.cloud{position:fixed;background:#fff;border-radius:40px;opacity:.82;animation:drift linear infinite;pointer-events:none;z-index:0}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+.c1{width:100px;height:33px;top:5%;left:-120px;animation-duration:30s}
+.c1::before{width:50px;height:50px;top:-25px;left:10px}.c1::after{width:33px;height:33px;top:-17px;left:48px}
+.c2{width:70px;height:23px;top:13%;left:-90px;animation-duration:42s;animation-delay:-10s;opacity:.6}
+.c2::before{width:36px;height:36px;top:-18px;left:8px}.c2::after{width:24px;height:24px;top:-12px;left:34px}
+@keyframes drift{from{left:-200px}to{left:110%}}
+.sun{position:fixed;top:12px;right:18px;font-size:48px;animation:sway 4s ease-in-out infinite;pointer-events:none;z-index:0}
+@keyframes sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(18deg)}}
+.grass{position:fixed;bottom:0;left:0;right:0;height:48px;background:#5cb85c;z-index:0;clip-path:polygon(0% 50%,2% 10%,4% 50%,6% 8%,8% 50%,10% 28%,12% 50%,14% 12%,16% 50%,18% 35%,20% 50%,22% 18%,24% 50%,26% 6%,28% 50%,30% 24%,32% 50%,34% 40%,36% 50%,38% 14%,40% 50%,42% 30%,44% 50%,46% 10%,48% 50%,50% 38%,52% 50%,54% 20%,56% 50%,58% 12%,60% 50%,62% 26%,64% 50%,66% 8%,68% 50%,70% 36%,72% 50%,74% 18%,76% 50%,78% 10%,80% 50%,82% 42%,84% 50%,86% 20%,88% 50%,90% 6%,92% 50%,94% 32%,96% 50%,98% 14%,100% 50%,100% 100%,0% 100%)}
+.flowers{position:fixed;bottom:44px;left:0;right:0;display:flex;justify-content:space-around;pointer-events:none;z-index:0;font-size:20px}
+.flower{animation:bobble 3s ease-in-out infinite}
+@keyframes bobble{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.card{position:relative;z-index:1;background:rgba(255,255,255,.96);border-radius:28px;padding:28px;width:100%;max-width:700px;box-shadow:0 12px 50px rgba(60,120,30,.18),0 3px 0 #90d060;border:3px solid #A0D860}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:20px}
+.title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--pink-dark);line-height:1;text-shadow:2px 3px 0 var(--pink)}
+.sub{font-size:14px;font-weight:700;color:var(--green-dark);margin:6px 0}
+.offline-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:800;margin-top:6px}
+
+/* SCENARIO SELECTOR */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.scen-btn{background:#fff;border:2.5px solid #C8EFC0;border-radius:16px;padding:12px;cursor:pointer;transition:all .15s;text-align:left}
+.scen-btn:hover{border-color:var(--pink);background:var(--pink-bg);transform:translateY(-2px)}
+.scen-btn.active{border-color:var(--pink);background:var(--pink-bg)}
+.scen-emoji{font-size:22px;display:block;margin-bottom:4px}
+.scen-title{font-weight:800;font-size:13px;color:var(--dark)}
+.scen-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:8px;display:inline-block;margin-top:3px}
+.tag-13{background:var(--pink-bg);color:var(--pink-dark);border:1px solid var(--pink)}
+.tag-26{background:var(--green-bg);color:var(--green-dark);border:1px solid var(--green)}
+
+/* SCENARIO BOX */
+.scenario-box{background:linear-gradient(135deg,#FFF8E8,#FFFDE4);border:2.5px solid #FFC400;border-radius:18px;padding:18px;margin-bottom:18px}
+.scen-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--yellow-dk);margin-bottom:6px}
+.scen-text{font-size:14px;font-weight:700;color:var(--dark);line-height:1.6}
+.hint-pill{display:inline-block;margin-top:10px;background:#fff;border:1.5px solid #C8EFC0;border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--muted)}
+
+/* INPUT */
+.input-label{font-family:'Fredoka One',cursive;font-size:17px;color:var(--green-dark);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+textarea{width:100%;border:2.5px solid #C8EFC0;border-radius:16px;padding:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--dark);resize:vertical;min-height:110px;transition:border-color .15s;outline:none;background:#FAFFF8}
+textarea:focus{border-color:var(--green)}
+.send-btn{margin-top:12px;width:100%;background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;border:none;border-radius:50px;padding:13px;font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;box-shadow:0 3px 0 var(--pink-dark);transition:transform .1s}
+.send-btn:hover{transform:translateY(-1px)}
+
+/* AI RESPONSE */
+.ai-response{margin-top:18px;border-radius:18px;padding:18px;display:none;animation:fadeIn .4s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ai-avatar{font-size:28px}
+.ai-name{font-family:'Fredoka One',cursive;font-size:16px}
+.ai-text{font-size:14px;font-weight:700;line-height:1.65;color:var(--dark)}
+.ai-text p{margin-bottom:8px}
+.tip-box{background:rgba(255,255,255,.8);border-radius:10px;padding:10px 14px;font-size:13px;margin-top:6px}
+
+/* CHECKLIST */
+.checklist{margin:12px 0;display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:700;padding:8px 12px;border-radius:10px}
+.check-item.found{background:#D8FFE8;color:#0A5E28}
+.check-item.missing{background:#FFF0F0;color:#880808}
+.check-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
+.score-chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;border:2px solid}
+.chip-great{background:#D8FFE8;color:#0A5E28;border-color:#40C870}
+.chip-ok{background:#FFF8D8;color:#7A5800;border-color:#FFC400}
+.chip-try{background:#FFE8E8;color:#880808;border-color:#FF8080}
+
+.next-scen-btn{margin-top:12px;width:100%;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;border:none;border-radius:50px;padding:12px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;box-shadow:0 3px 0 var(--green-dark)}
+.warn-box{background:#FFF0F8;border:2px solid var(--pink);border-radius:14px;padding:12px 16px;color:var(--pink-dark);font-weight:800;font-size:14px;margin-top:14px}
+.confetti-piece{position:fixed;pointer-events:none;border-radius:2px;animation:fall linear forwards;z-index:100}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@media(max-width:500px){.scenario-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="cloud c1"></div><div class="cloud c2"></div>
+<div class="sun">☀️</div>
+<div class="grass"></div>
+<div class="flowers">
+  <span class="flower" style="animation-delay:0s">🌷</span>
+  <span class="flower" style="animation-delay:.4s">🌼</span>
+  <span class="flower" style="animation-delay:.8s">🌸</span>
+  <span class="flower" style="animation-delay:1.2s">🌻</span>
+  <span class="flower" style="animation-delay:1.6s">🌹</span>
+</div>
+
+<div class="card">
+  <div class="header">
+    <div class="title">🤖 Brukermedvirkning mål 13 og rettigheter i arbeidslivet mål 26 (VG3 BUA)</div>
+    <div class="sub">Øv på virkelige situasjoner – mål 13 og mål 26 · ingen innlogging</div>
+    <span class="offline-badge">✅ Fungerer uten innlogging</span>
+  </div>
+
+  <div class="scenario-grid" id="scen-grid">
+    <button class="scen-btn active" onclick="selectScenario(0)">
+      <span class="scen-emoji">🧒</span>
+      <div class="scen-title">Oda vil ikke delta</div>
+      <span class="scen-tag tag-13">Mål 13</span>
+    </button>
+    <button class="scen-btn" onclick="selectScenario(1)">
+      <span class="scen-emoji">👨‍👩‍👧</span>
+      <div class="scen-title">Konflikt med foresatte</div>
+      <span class="scen-tag tag-13">Mål 13</span>
+    </button>
+    <button class="scen-btn" onclick="selectScenario(2)">
+      <span class="scen-emoji">💼</span>
+      <div class="scen-title">Ekstra vakt uten betaling</div>
+      <span class="scen-tag tag-26">Mål 26</span>
+    </button>
+    <button class="scen-btn" onclick="selectScenario(3)">
+      <span class="scen-emoji">📋</span>
+      <div class="scen-title">Ingen arbeidsavtale</div>
+      <span class="scen-tag tag-26">Mål 26</span>
+    </button>
+    <button class="scen-btn" onclick="selectScenario(4)">
+      <span class="scen-emoji">🗣️</span>
+      <div class="scen-title">Barn som ikke vil snakke</div>
+      <span class="scen-tag tag-13">Mål 13</span>
+    </button>
+    <button class="scen-btn" onclick="selectScenario(5)">
+      <span class="scen-emoji">🔔</span>
+      <div class="scen-title">Noe kritikkverdig på jobb</div>
+      <span class="scen-tag tag-26">Mål 26</span>
+    </button>
+  </div>
+
+  <div class="scenario-box">
+    <div class="scen-label">📌 Situasjonen</div>
+    <div class="scen-text" id="scen-text"></div>
+    <div class="hint-pill" id="scen-hint"></div>
+  </div>
+
+  <div class="input-label">💬 Hva ville du gjort / sagt?</div>
+  <textarea id="student-answer" placeholder="Skriv svaret ditt her... Tenk deg at du er i denne situasjonen. Hva gjør du konkret? Hva sier du?"></textarea>
+  <button class="send-btn" onclick="checkAnswer()">🌸 Sjekk svaret mitt!</button>
+
+  <div id="response-area"></div>
+</div>
+
+<script>
+const scenarios = [
+  {
+    title: "Oda vil ikke delta",
+    tag: "Mål 13",
+    text: "Du jobber i en SFO. Oda (9 år) setter seg ned og vil ikke delta i den planlagte aktiviteten. Hun sier ingenting om hvorfor. Mor ringer litt senere og sier at Oda alltid skal gjøre som de andre barna.",
+    hint: "💡 Tenk på: barnets rett til medvirkning, din rolle, og samarbeid med foresatte",
+    checks: [
+      { label: "Lytter til / snakker med Oda",        words: ["spørre","spør","snakke","lytte","høre","spørr","samtale","prate"], tip: "Det første du bør gjøre er å møte Oda med nysgjerrighet – ikke press." },
+      { label: "Respekterer barnets ønske / medvirkning", words: ["medvirkning","ønske","vil ikke","respekter","rett","valg","bestemmelse","oda"], tip: "Barnehageloven og FNs barnekonvensjon (art. 12) gir barn rett til å si sin mening." },
+      { label: "Alderstilpasset – du har fortsatt omsorgsansvar", words: ["ansvar","voksen","omsorgs","forsiktig","trygg","forsikre","passe på","grense"], tip: "Medvirkning betyr ikke at barnet bestemmer alt – du har fortsatt ansvaret for barnets sikkerhet." },
+      { label: "Tar opp med mor på en god måte",       words: ["mor","foreldr","foresatt","snakke med","forklare","forklare","informer","dialog","si til"], tip: "Du må balansere barnets rettigheter med foreldrenes ønsker – og forklare hva medvirkning betyr." },
+    ],
+    excellent: "Du viser god forståelse for brukermedvirkning! Du lytter til Oda, respekterer hennes ønske, og kommuniserer godt med foresatte. 🌟",
+    good: "Bra start! Du tenker på Odas rettigheter. Husk også å tenke på samtalen med mor – hun trenger en forklaring.",
+    try: "Husk at Oda har rett til å si sin mening (FNs barnekonvensjon, art. 12). Start med å sette deg ned og spørre Oda rolig hva hun tenker."
+  },
+  {
+    title: "Konflikt med foresatte",
+    tag: "Mål 13",
+    text: "Yousef (14 år) forteller deg at han vil slutte på fotballtreninga som foreldrene tvinger ham til. Foreldrene mener det er det beste for ham og trenger svar. Yousef ber deg snakke med foreldrene på hans vegne.",
+    hint: "💡 Tenk på: ungdoms rett til medvirkning, taushetsplikt, og din støtterolle",
+    checks: [
+      { label: "Lytter til og støtter Yousef",          words: ["lytte","høre","støtte","snakke med","yousef","ungdom","ung","forstå","anerkjenn"], tip: "Ungdom over ca. 12 år har stor rett til selvbestemmelse – Yousef skal føle seg hørt." },
+      { label: "Reflekterer over taushetsplikt",         words: ["taushets","taushet","fortrolig","privat","ikke si","konfidensielt","videre"], tip: "Du kan ikke dele det Yousef har fortalt deg uten hans samtykke." },
+      { label: "Hjelper Yousef å finne sin egen stemme", words: ["han selv","yousef kan","støtte","hjelpe","si det selv","øvelse","tørre","hjelp"], tip: "Din jobb er å støtte Yousef, ikke overta – la ham uttrykke seg selv." },
+      { label: "Tenker på grenser for din rolle",        words: ["ikke min","min rolle","grense","profesjon","leder","kollega","videre","råd"], tip: "Noen situasjoner krever at du involverer en leder eller andre fagpersoner." },
+    ],
+    excellent: "Flott! Du balanserer Yousefs rettigheter med taushetsplikten og støtterollen din på en god måte. 🌟",
+    good: "Du tenker riktig om ungdomsmedvirkning. Husk å reflektere over taushetsplikten – hva kan du si til foreldrene uten Yousefs samtykke?",
+    try: "Start med: hva ønsker Yousef at DU skal gjøre? Kan du hjelpe ham å si det selv i stedet for å snakke på hans vegne?"
+  },
+  {
+    title: "Ekstra vakt uten betaling",
+    tag: "Mål 26",
+    text: "Sjefen din ber deg ta en ekstra vakt denne helgen uten ekstra betaling, fordi dere er understaffet. Hun sier: «Vi er som en familie her og stiller opp for hverandre.» Du er usikker på om du kan si nei.",
+    hint: "💡 Tenk på: din arbeidsavtale, rett til overtidsbetaling, og lojalitetsplikten",
+    checks: [
+      { label: "Kjenner retten til overtidsbetaling",    words: ["overtid","betaling","betalt","lønn","rettighet","rett til","lov","ferielov","arbeidsmiljø"], tip: "Overtidsarbeid skal alltid kompenseres – enten med penger eller avspasering. Dette er lovfestet." },
+      { label: "Sjekker arbeidsavtalen",                 words: ["avtale","arbeidsavtale","kontrakt","sjekke","lese","stå i","avtal"], tip: "Arbeidsavtalen din sier noe om arbeidstid og overtid. Du har rett til å lese den og forstå den." },
+      { label: "Kommuniserer rolig og profesjonelt",     words: ["si","snakke","forklare","dialog","rolig","respektfullt","profesjon","politt","høflig"], tip: "Du kan si nei på en respektfull måte uten å ødelegge relasjonen." },
+      { label: "Kjenner til fagforening eller hjelp",    words: ["fagforening","fagforbund","lo","tillitsvalgt","hjelp","rådgiving","støtte","organisasjon"], tip: "Fagforbundet eller tillitsvalgt kan hjelpe deg hvis du er usikker på rettighetene dine." },
+    ],
+    excellent: "Veldig bra! Du kjenner rettighetene dine og vet hvordan du kommuniserer profesjonelt. Det er nøkkelen! 🌟",
+    good: "Du tenker riktig! Husk at overtid er lovfestet – det er ikke snillhet å la seg utnytte, det er å godta lovbrudd.",
+    try: "Husk: overtidsbetaling er en rettighet, ikke noe sjefens godhet. Sjekk arbeidsavtalen din – hva sier den om arbeidstid og overtid?"
+  },
+  {
+    title: "Ingen skriftlig arbeidsavtale",
+    tag: "Mål 26",
+    text: "Du har jobbet i barnehagen i 6 uker. Du har fortsatt ikke fått skriftlig arbeidsavtale, selv om du har bedt om det to ganger. Lønnen ser også litt lavere ut enn dere ble enige om muntlig.",
+    hint: "💡 Tenk på: retten til skriftlig arbeidsavtale, hva avtalen skal inneholde, og hvem du kontakter",
+    checks: [
+      { label: "Vet at skriftlig arbeidsavtale er lovpålagt", words: ["lov","plikt","rett","arbeidsmiljø","krav","pliktig","alltid","måned"], tip: "Arbeidsgiver er lovpliktig til å gi deg skriftlig arbeidsavtale innen én måned etter oppstart." },
+      { label: "Tar initiativ til å løse det",          words: ["ta kontakt","spørre","si ifra","be om","etterspørre","skriftlig","kreve","minne om"], tip: "Spør skriftlig (f.eks. på e-post) – da har du dokumentasjon." },
+      { label: "Vet hva arbeidsavtalen skal inneholde", words: ["lønn","arbeidstid","stilling","tittel","oppstart","oppsigelse","innhold","informasjon"], tip: "Avtalen skal inneholde lønn, arbeidstid, stillingstittel, startdato og oppsigelsestid." },
+      { label: "Vet hvem de kan kontakte for hjelp",   words: ["fagforening","tillitsvalgt","arbeidstilsyn","lo","fagforbund","nav","hjelp","ressurs","kontakt"], tip: "Arbeidstilsynet og fagforeninger kan hjelpe deg med å få det du har krav på." },
+    ],
+    excellent: "Imponerende! Du kjenner rettighetene dine og vet konkret hva du skal gjøre og hvem du kan kontakte. 🌟",
+    good: "Du er på riktig spor. Husk å dokumentere alt skriftlig – det gir deg bevis hvis det oppstår konflikt.",
+    try: "Du har rett til skriftlig arbeidsavtale innen én måned. Send en e-post til arbeidsgiver og be om den skriftlig – da har du dokumentasjon."
+  },
+  {
+    title: "Barn som ikke vil snakke",
+    tag: "Mål 13",
+    text: "Mikael (7 år) sitter alene i hjørnet og nekter å snakke med deg. Han virker lei seg. De andre ansatte sier du bare skal la ham sitte – han pleier å komme ut av det av seg selv. Du er usikker på hva du skal gjøre.",
+    hint: "💡 Tenk på: barnets rett til å bli sett, alderstilpasset kommunikasjon, og din plikt til å observere",
+    checks: [
+      { label: "Nærmer seg barnet forsiktig og respektfullt", words:["rolig","forsiktig","sette seg","nær","komme bort","tilstede","nærme","uten press"], tip: "Du kan vise omsorg uten å presse – sett deg stille ved siden av ham uten å kreve svar." },
+      { label: "Observerer og tolker kroppsspråk",      words:["observere","se","kropp","kroppsspråk","mimikk","tegn","signal","uttrykk","merker"], tip: "Barn kommuniserer mye uten ord – din jobb er å lese situasjonen." },
+      { label: "Bruker alderstilpasset kommunikasjon",  words:["alder","liten","7 år","enkelt","enkle","spørsmål","åpen","hva","lei seg","hva skjer"], tip: "Åpne, enkle spørsmål fungerer bedre enn direkte konfrontasjon med yngre barn." },
+      { label: "Dokumenterer eller melder fra",         words: ["notere","dokumentere","kollega","leder","si ifra","bekymring","meld","fortelle"], tip: "Hvis du er bekymret, bør du dokumentere observasjonen og dele den med din leder." },
+    ],
+    excellent: "Veldig bra! Du balanserer respekt for barnets grenser med plikten til å ta vare på det. 🌟",
+    good: "Bra tenkt! Husk at tilstedeværelse uten press ofte er det mest effektive – barnet trenger å vite at du er der.",
+    try: "Prøv å sette deg stille ved siden av Mikael uten å si noe – vis at du er der. Barn trenger å føle seg trygge før de åpner seg."
+  },
+  {
+    title: "Noe kritikkverdig på jobben",
+    tag: "Mål 26",
+    text: "Du oppdager at en kollega jevnlig er grov i tonen mot barna – ikke slår, men roper og bruker nedsettende ord. De andre ansatte ser ut til å ignorere det. Du er ny og usikker på hva du skal gjøre.",
+    hint: "💡 Tenk på: varslingsplikten, varslingsvernet, og din rolle som ansatt",
+    checks: [
+      { label: "Kjenner til varslingsplikten",          words: ["varsl","si fra","plikt","rett","melde","kritikkverdig","lov","lovpålagt"], tip: "Du har rett OG plikt til å varsle om kritikkverdige forhold på arbeidsplassen." },
+      { label: "Kjenner til varslingsvernet",           words: ["vern","beskyttet","trygg","gjengjeldelse","straffe","si fra uten","lov","beskytt"], tip: "Arbeidsmiljøloven beskytter deg mot gjengjeldelse dersom du varsler i god tro." },
+      { label: "Tar tak i situasjonen – varsler",       words: ["leder","si til","kontakte","snakke med","ta opp","melde","varsle","informere"], tip: "Start med nærmeste leder. Hvis det ikke hjelper, kan du gå videre – til for eksempel arbeidstilsynet." },
+      { label: "Tenker på barnas beste",               words: ["barn","barnas","trygghet","beskytte","omsorg","ivareta","verne","rettighet"], tip: "Hensynet til barnas trygghet er alltid overordnet ubehaget ved å varsle." },
+    ],
+    excellent: "Veldig sterkt svar! Du forstår varslingsplikten og barnas rettigheter – og du vet at du er beskyttet. 🌟",
+    good: "Du er på rett spor. Husk at du er beskyttet av varslingsvernet – du trenger ikke å være redd for å si fra.",
+    try: "Du har plikt til å varsle om dette. Start med å snakke med din leder. Arbeidsmiljøloven beskytter deg mot gjengjeldelse."
+  }
+];
+
+let selectedScenario = 0;
+
+function selectScenario(idx) {
+  selectedScenario = idx;
+  document.querySelectorAll('.scen-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  const s = scenarios[idx];
+  document.getElementById('scen-text').textContent = s.text;
+  document.getElementById('scen-hint').textContent = s.hint;
+  document.getElementById('student-answer').value = '';
+  document.getElementById('response-area').innerHTML = '';
+}
+
+function normalize(text) {
+  return text.toLowerCase()
+    .replace(/æ/g,'ae').replace(/ø/g,'o').replace(/å/g,'a')
+    .replace(/[^a-z0-9 ]/g,' ');
+}
+
+function checkAnswer() {
+  const rawAnswer = document.getElementById('student-answer').value.trim();
+  if (rawAnswer.length < 20) {
+    document.getElementById('response-area').innerHTML =
+      '<div class="warn-box">⚠️ Skriv litt mer – minst én konkret setning om hva du ville gjort!</div>';
+    return;
+  }
+
+  const answer = normalize(rawAnswer);
+  const s = scenarios[selectedScenario];
+
+  const results = s.checks.map(check => {
+    const found = check.words.some(w => answer.includes(normalize(w)));
+    return { ...check, found };
+  });
+
+  const foundCount = results.filter(r => r.found).length;
+  const total = results.length;
+  const ratio = foundCount / total;
+
+  let level, bgColor, borderColor, chipClass, chipLabel;
+  if (ratio >= 0.75) {
+    level = 'excellent'; bgColor = '#F0FFF4'; borderColor = '#40C870';
+    chipClass = 'chip-great'; chipLabel = '🌟 Veldig bra!';
+  } else if (ratio >= 0.4) {
+    level = 'good'; bgColor = '#FFFDF0'; borderColor = '#FFC400';
+    chipClass = 'chip-ok'; chipLabel = '👍 Bra forsøk!';
+  } else {
+    level = 'try'; bgColor = '#FFF5F5'; borderColor = '#FF8080';
+    chipClass = 'chip-try'; chipLabel = '💪 Øv mer!';
+  }
+
+  const missingTip = results.find(r => !r.found)?.tip || results[0].tip;
+
+  const checklistHtml = results.map(r => `
+    <div class="check-item ${r.found ? 'found' : 'missing'}">
+      <span class="check-icon">${r.found ? '✅' : '❌'}</span>
+      <div>
+        <div>${r.label}</div>
+        ${!r.found ? `<div style="font-size:11px;opacity:.8;margin-top:2px">${r.tip}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('response-area').innerHTML = `
+    <div class="ai-response" id="ai-resp" style="background:${bgColor};border:2px solid ${borderColor}">
+      <div class="ai-header">
+        <span class="ai-avatar">🤖</span>
+        <span class="ai-name" style="color:${borderColor}">Tilbakemelding</span>
+      </div>
+      <div class="ai-text">
+        <p><strong>${s[level]}</strong></p>
+        <div class="checklist">${checklistHtml}</div>
+        ${ratio < 1 ? `<div class="tip-box">📚 <strong>Faglig tips:</strong> ${missingTip}</div>` : ''}
+      </div>
+      <div class="score-chips">
+        <span class="chip ${chipClass}">${chipLabel}</span>
+        <span class="chip" style="background:#EAF5FF;color:#0A4A9A;border-color:#7AC8FF">📊 ${foundCount}/${total} elementer</span>
+      </div>
+    </div>
+    <button class="next-scen-btn" onclick="nextScenario()">Prøv en annen situasjon →</button>`;
+
+  document.getElementById('ai-resp').style.display = 'block';
+  if (ratio >= 0.75) launchConfetti();
+}
+
+function nextScenario() {
+  selectScenario((selectedScenario + 1) % scenarios.length);
+}
+
+function launchConfetti() {
+  const colors = ['#FF6BAE','#4AA83C','#FFE066','#3A94C8','#FF9F40'];
+  for (let i = 0; i < 50; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.5}s`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+selectScenario(0);
+</script>
+</body>
+</html>
