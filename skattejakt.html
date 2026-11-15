@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skattejakt: Helse og oppvekst</title>
+<style>
+:root{
+  --teal:#0f766e; --teal-d:#0b5953; --teal-l:#ccfbf1;
+  --amber:#d97706; --amber-l:#fef3c7;
+  --coral:#e8604c; --coral-l:#fde4df;
+  --safe:#15803d; --safe-l:#dcfce7;
+  --blue:#2563eb; --violet:#7c3aed;
+  --ink:#1f2937; --muted:#6b7280; --line:#e7e1d6;
+  --paper:#fbf8f3; --card:#ffffff;
+  --sans:"Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif:Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  --r:18px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);min-height:100vh;display:flex;flex-direction:column;}
+button{font-family:inherit;cursor:pointer;}
+h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;}
+
+/* Topbar */
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--teal);color:#fff;}
+.topbar .brand{display:flex;align-items:center;gap:10px;flex:1 1 auto;min-width:0;}
+.topbar .brand svg{flex:0 0 auto;}
+.topbar .brand .t{font-family:var(--serif);font-size:1.15rem;font-weight:700;line-height:1.15;}
+.topbar .brand .s{font-size:.78rem;opacity:.85;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:45%;}
+.dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.3);}
+.dots i.done{background:var(--amber-l);}
+.dots i.now{background:#fff;box-shadow:0 0 0 2px var(--amber);}
+.iconbtn{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:1.2rem;line-height:1;flex:0 0 auto;}
+.iconbtn:hover{background:rgba(255,255,255,.15);}
+
+/* Layout */
+.app{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;padding:18px;width:100%;max-width:1280px;margin:0 auto;}
+.app.solo{grid-template-columns:minmax(0,1fr);max-width:880px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 2px 0 rgba(0,0,0,.03);}
+.main{min-width:0;}
+
+/* Scoreboard */
+.board h3{font-size:1.05rem;margin-bottom:10px;color:var(--teal-d);}
+.board ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+.board li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--paper);border:1px solid var(--line);transition:transform .3s;}
+.board li.lead{background:var(--amber-l);border-color:#f2d48a;}
+.board li.bump{animation:bump .6s;}
+.board .nm{flex:1 1 auto;min-width:0;font-weight:600;font-size:.95rem;line-height:1.2;}
+.board .sc{font-family:var(--serif);font-weight:700;font-size:1.25rem;display:flex;align-items:center;gap:4px;}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+.coin{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fde68a,#f59e0b 60%,#b45309);box-shadow:inset 0 0 0 2px rgba(180,83,9,.35);}
+
+/* Setup */
+.hero{display:flex;gap:20px;align-items:center;margin-bottom:18px;}
+.hero h1{font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.1;color:var(--teal-d);}
+.hero p{margin:6px 0 0;color:var(--muted);}
+.howto{background:var(--teal-l);border-radius:14px;padding:14px 16px;margin-bottom:18px;line-height:1.5;}
+.howto b{color:var(--teal-d);}
+.row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-weight:600;font-size:.9rem;}
+.seg{display:flex;flex-wrap:wrap;gap:6px;}
+.seg button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:7px 13px;font-weight:600;color:var(--ink);}
+.seg button.on{border-color:var(--teal);background:var(--teal);color:#fff;}
+.teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:18px;}
+.teamin{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 10px;}
+.teamin input{flex:1 1 auto;min-width:0;width:100%;border:none;background:transparent;font:inherit;font-weight:600;font-size:1rem;color:var(--ink);padding:4px;}
+.teamin input:focus{outline:2px solid var(--teal);border-radius:6px;}
+.big{border:none;border-radius:14px;padding:14px 26px;font-size:1.1rem;font-weight:700;background:var(--coral);color:#fff;box-shadow:0 4px 0 #b9442f;}
+.big:active{transform:translateY(2px);box-shadow:0 2px 0 #b9442f;}
+.big.teal{background:var(--teal);box-shadow:0 4px 0 var(--teal-d);}
+.big.ghost{background:#fff;color:var(--teal-d);border:2px solid var(--teal);box-shadow:none;}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+
+/* Question */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.pill{display:inline-block;background:var(--amber-l);color:#92400e;font-weight:700;border-radius:999px;padding:4px 12px;font-size:.85rem;}
+.timer{height:12px;border-radius:999px;background:#eee8dd;overflow:hidden;margin-bottom:16px;}
+.timer div{height:100%;background:var(--teal);width:100%;transition:width .1s linear,background .3s;}
+.timer div.low{background:var(--coral);}
+.timetxt{font-family:var(--serif);font-weight:700;font-size:1.4rem;color:var(--teal-d);min-width:2.5em;text-align:right;}
+.timetxt.out{color:var(--coral);animation:pulse 1s infinite;}
+@keyframes pulse{50%{opacity:.4}}
+.qtext{font-family:var(--serif);font-size:clamp(1.3rem,3vw,2.1rem);line-height:1.25;margin:4px 0 18px;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;border:none;border-radius:16px;padding:16px;color:#fff;font-size:clamp(1rem,1.8vw,1.25rem);font-weight:600;line-height:1.3;min-height:84px;width:100%;box-shadow:0 5px 0 rgba(0,0,0,.18);cursor:default;transition:opacity .3s,transform .3s;}
+.opt .n{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.5rem;font-weight:700;}
+.opt.c0{background:var(--teal);} .opt.c1{background:var(--amber);} .opt.c2{background:var(--coral);} .opt.c3{background:var(--blue);}
+.opt.dim{opacity:.28;}
+.opt.right{transform:scale(1.02);box-shadow:0 0 0 4px #fff,0 0 0 8px var(--safe);}
+.fact{background:var(--safe-l);border-left:5px solid var(--safe);border-radius:10px;padding:12px 14px;margin-bottom:16px;line-height:1.45;}
+.fact b{color:var(--safe);}
+.who h3{font-size:1.1rem;margin-bottom:8px;}
+.who .sub{color:var(--muted);font-size:.9rem;margin:0 0 10px;}
+.toggles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:16px;}
+.tog{display:flex;align-items:center;gap:8px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 10px;font-weight:600;font-size:.95rem;color:var(--ink);width:100%;}
+.tog > span:not(.ck){flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tog.on{border-color:var(--safe);background:var(--safe-l);}
+.tog .ck{margin-left:auto;width:22px;height:22px;border-radius:6px;border:2px solid var(--line);flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;}
+.tog.on .ck{background:var(--safe);border-color:var(--safe);}
+
+/* Chests */
+.chesthead{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+.chesthead h2{font-size:clamp(1.3rem,2.8vw,1.9rem);}
+.chestsub{color:var(--muted);margin:0 0 16px;}
+.chests{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.chest{background:linear-gradient(#fff,#fdf6e7);border:2px solid #f2d48a;border-radius:16px;padding:16px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;transition:transform .2s;}
+.chest:hover:not(:disabled){transform:translateY(-4px) rotate(-1deg);}
+.chest:disabled{cursor:default;}
+.chest svg{width:100%;max-width:130px;height:auto;}
+.chest .lid{transform-origin:12px 48px;transition:transform .5s cubic-bezier(.3,1.6,.5,1);}
+.chest.open .lid{transform:rotate(-28deg) translateY(-6px);}
+.chest .glow{opacity:0;transition:opacity .4s .2s;}
+.chest.open .glow{opacity:1;}
+.chest.faded{opacity:.35;}
+.chest .lbl{font-weight:700;color:#92400e;font-size:.95rem;}
+.result{border-radius:16px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;animation:pop .45s cubic-bezier(.3,1.6,.5,1);}
+.result .big-t{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.8rem);font-weight:700;line-height:1.15;}
+.result p{margin:4px 0 0;}
+.result.good{background:var(--safe-l);} .result.bad{background:var(--coral-l);} .result.wild{background:#ede9fe;} .result.meh{background:#f1f0ec;}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+.targets{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-bottom:16px;}
+.target{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 10px;font-weight:600;color:var(--ink);text-align:left;width:100%;}
+.target:hover{border-color:var(--violet);background:#f5f3ff;}
+.target .sc{margin-left:auto;font-family:var(--serif);font-weight:700;}
+
+/* End */
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:12px;margin:20px 0 22px;}
+.pod{display:flex;flex-direction:column;align-items:center;gap:6px;width:31%;max-width:190px;}
+.pod .nm{font-weight:700;text-align:center;line-height:1.2;}
+.pod .block{width:100%;border-radius:12px 12px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;color:#fff;font-family:var(--serif);font-size:1.8rem;font-weight:700;}
+.pod.p1 .block{height:150px;background:var(--amber);} .pod.p2 .block{height:110px;background:var(--teal);} .pod.p3 .block{height:80px;background:var(--coral);}
+.pod .pts{font-family:var(--serif);font-weight:700;display:flex;align-items:center;gap:4px;}
+.confetti{position:fixed;top:-12px;width:10px;height:14px;border-radius:2px;pointer-events:none;animation:fall linear forwards;z-index:30;}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);}}
+.endnote{background:var(--teal-l);border-radius:14px;padding:14px 16px;line-height:1.5;margin-bottom:16px;}
+
+/* Modal – festet mot toppen */
+.modal{position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:flex-start;justify-content:center;padding:40px 14px 14px;z-index:40;overflow-y:auto;}
+.modal[hidden]{display:none;}
+.modal .box{background:#fff;border-radius:var(--r);padding:22px;max-width:560px;width:100%;}
+.modal h2{font-size:1.35rem;margin-bottom:10px;color:var(--teal-d);}
+.modal p,.modal li{line-height:1.5;}
+.modal ul{padding-left:18px;}
+.modal .refs li{margin-bottom:8px;}
+.modal a{color:var(--teal);}
+
+svg{flex-shrink:0;}
+.board .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.board .sc{flex:0 0 auto;}
+footer{text-align:center;padding:12px 14px 16px;color:var(--muted);font-size:.85rem;}
+footer button{background:none;border:none;color:var(--teal);text-decoration:underline;font-size:.85rem;padding:0;}
+footer .sep{margin:0 6px;}
+
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr);}
+  .board ol{flex-direction:row;flex-wrap:wrap;}
+  .board li{flex:1 1 150px;}
+}
+@media (max-width:640px){
+  .app{padding:10px;gap:10px;}
+  .card{padding:16px;}
+  .opts{grid-template-columns:1fr;}
+  .opt{min-height:60px;padding:12px;}
+  .hero{flex-direction:column;align-items:flex-start;gap:10px;}
+  .hero svg{width:64px;height:64px;}
+  .chests{gap:8px;}
+  .chest{padding:10px 4px 8px;}
+  .chest .lbl{font-size:.8rem;}
+  .dots{display:none;}
+  .topbar .brand .s{display:none;}
+  .result{flex-direction:column;align-items:flex-start;}
+  .pod .block{font-size:1.3rem;}
+  .pod .nm{font-size:.82rem;}
+  .pod.p1 .block{height:110px;} .pod.p2 .block{height:80px;} .pod.p3 .block{height:56px;}
+  footer .sep{display:none;}
+  footer .cr{display:block;margin-bottom:4px;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="6" y="28" width="52" height="28" rx="5" fill="#fbbf24" stroke="#fff" stroke-width="3"/>
+      <path d="M6 30 V24 Q6 12 32 12 Q58 12 58 24 V30 Z" fill="#f59e0b" stroke="#fff" stroke-width="3"/>
+      <rect x="26" y="16" width="12" height="4" rx="1" fill="#fff"/>
+      <rect x="30" y="12" width="4" height="12" rx="1" fill="#fff"/>
+      <rect x="27" y="34" width="10" height="12" rx="2" fill="#fff"/>
+    </svg>
+    <div>
+      <div class="t">Skattejakt: Helse og oppvekst</div>
+      <div class="s">Utdanningsvalg · lagspill på storskjerm</div>
+    </div>
+  </div>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+  <button class="iconbtn" id="restartBtn" title="Start på nytt" aria-label="Start på nytt">↻</button>
+</header>
+
+<div class="app solo" id="app">
+  <main class="main" id="main"></main>
+  <aside class="card board" id="board" hidden></aside>
+</div>
+
+<footer>
+  <span class="cr">Utviklet av Stine Mari Sægrov</span><span class="sep">·</span><a class="cr" href="/" style="color:var(--teal)">edtechstine.no</a><span class="sep">·</span><button id="srcBtn" type="button">Se kilder</button>
+</footer>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div class="box" id="modalBox"></div></div>
+
+<script>
+/* ---------- Data ---------- */
+const QUESTIONS = [
+  {q:"Hvilke programfag har du på Vg1 Helse- og oppvekstfag?",
+   a:["Helsefremmende arbeid, Kommunikasjon og samhandling, Yrkesliv i helse- og oppvekstsektoren","Anatomi, Psykologi og Pedagogikk","Sykepleie, Legevakt og Matlaging","Biologi, Kjemi og Fysikk"],
+   f:"De tre programfagene på Vg1 handler om helse, om å møte mennesker og om hvordan det er å jobbe i yrkene."},
+  {q:"Du vil jobbe på sykehjem eller i hjemmetjenesten og ta fagbrev. Hvilket yrke passer?",
+   a:["Helsefagarbeider","Apotektekniker","Tannhelsesekretær","Ambulansearbeider"],
+   f:"Helsefagarbeidere er en av de største yrkesgruppene i helsetjenesten, og det er stort behov for flere."},
+  {q:"Hvilket yrke jobber ofte på SFO, i barnehage eller på fritidsklubb?",
+   a:["Barne- og ungdomsarbeider","Helsefagarbeider","Apotektekniker","Helsesekretær"],
+   f:"Barne- og ungdomsarbeidere legger til rette for lek, læring og trygghet for barn og unge."},
+  {q:"Hva er den vanlige veien til fagbrev som helsefagarbeider?",
+   a:["2 år på skole + 2 år som lærling","3 år på skole","1 år på skole + 1 år som lærling","4 år på skole"],
+   f:"Som lærling får du lønn mens du lærer yrket ute på en arbeidsplass."},
+  {q:"Kan du bli sykepleier hvis du starter på Helse- og oppvekstfag?",
+   a:["Ja, for eksempel ved å ta påbygg til generell studiekompetanse","Nei, bare fra studiespesialisering","Nei, det går ikke","Bare hvis du har jobbet i ti år"],
+   f:"Yrkesfag stenger ingen dører. Med påbygg kan du søke høyere utdanning, som sykepleie eller barnehagelærer."},
+  {q:"Du jobber på et sykehjem og får vite noe privat om en beboer. Hva gjelder?",
+   a:["Du har taushetsplikt og kan ikke fortelle det videre","Du kan dele det på sosiale medier hvis du ikke skriver navnet","Du kan fortelle det til venner, men ikke til familien","Det er bare legen som har taushetsplikt"],
+   f:"Alle som jobber i helse- og oppvekstsektoren har taushetsplikt – også elever i praksis."},
+  {q:"Hva er det viktigste enkelttiltaket for å hindre smitte på jobb i helsevesenet?",
+   a:["God håndhygiene","Munnbind hele tiden","Antibiotika til alle","Åpne vinduer"],
+   f:"Hendene er den vanligste smitteveien. Riktig håndvask og håndsprit stopper mye smitte."},
+  {q:"Hvilket nummer ringer du for å få ambulanse i Norge?",
+   a:["113","112","110","116 117"],
+   f:"113 er medisinsk nødhjelp. 112 er politi, 110 er brann, og 116 117 er legevakt."},
+  {q:"Hjerte-lunge-redning på en voksen: Hvor mange brystkompresjoner gir du før to innblåsninger?",
+   a:["30","15","10","50"],
+   f:"30 kompresjoner og 2 innblåsninger – og så fortsetter du til hjelpen kommer."},
+  {q:"Hva er nonverbal kommunikasjon?",
+   a:["Kommunikasjon uten ord, som blikk, ansiktsuttrykk og kroppsspråk","Å snakke i telefon","Å sende en melding på SMS","Å snakke et annet språk"],
+   f:"Et smil, et nikk eller en rolig stemme kan si like mye som ordene du bruker."},
+  {q:"Hva betyr aktiv lytting?",
+   a:["Å vise at du følger med, med blikk, nikk og spørsmål","Å snakke mest selv så samtalen ikke stopper","Å høre på musikk mens du jobber","Å gi gode råd med en gang"],
+   f:"Aktiv lytting får den andre til å føle seg sett og tatt på alvor."},
+  {q:"Hvor mye fysisk aktivitet anbefales for barn og unge?",
+   a:["Minst 60 minutter hver dag","30 minutter i uka","2 timer i uka","10 minutter hver dag"],
+   f:"Helsedirektoratet anbefaler minst 60 minutter fysisk aktivitet daglig for barn og unge."},
+  {q:"Sant eller usant: På Vg1 Helse- og oppvekstfag er du ute i praksis på ekte arbeidsplasser.",
+   a:["Sant","Usant"], tf:true,
+   f:"Du får prøve deg i for eksempel barnehage, sykehjem eller på sykehus allerede på Vg1."},
+  {q:"Hvem jobber med å utlevere medisiner og gi råd til kunder på et apotek?",
+   a:["Apotektekniker","Tannhelsesekretær","Helsesekretær","Ambulansearbeider"],
+   f:"Veien til apotektekniker går gjennom Vg2 helseservicefag og Vg3 apotekteknikk."},
+  {q:"Hva kalles det når brukeren får være med og bestemme over sin egen hverdag og behandling?",
+   a:["Brukermedvirkning","Taushetsplikt","Turnus","Smittevern"],
+   f:"Det er brukeren som er eksperten på sitt eget liv. Derfor skal hun få være med og bestemme."},
+  {q:"Sant eller usant: Det er bare jenter som jobber i helse- og oppvekstyrkene.",
+   a:["Usant","Sant"], tf:true, order:["Sant","Usant"],
+   f:"Helt usant! Det trengs flere gutter, og mange menn jobber for eksempel i ambulansetjenesten, i barnehager og på sykehus."},
+  {q:"Hva handler ergonomi om?",
+   a:["Å bruke kroppen riktig så du ikke skader deg på jobb","Å spise sunn mat","Å skrive rapporter","Å lage vaktlister"],
+   f:"Riktige løfteteknikker og hjelpemidler gjør at kroppen holder et helt arbeidsliv."},
+  {q:"Hva betyr det å jobbe turnus?",
+   a:["Å jobbe til ulike tider – dag, kveld, natt og helg","Å bytte arbeidsplass hver uke","Å bare jobbe på dagtid","Å jobbe hjemmefra"],
+   f:"Mange helsetjenester er åpne døgnet rundt. Turnus gir variasjon og ofte noen fridager midt i uka."},
+  {q:"Du vil rykke ut med blålys og hjelpe folk i akutte situasjoner. Hvilket Vg2 passer?",
+   a:["Ambulansefag","Helseservicefag","Barne- og ungdomsarbeiderfag","Hudpleie"],
+   f:"Ambulansearbeidere jobber der det skjer – på veien, i hjem og ute i naturen."}
+];
+
+const DEFAULT_NAMES = ["Stetoskopene","Plasterpatruljen","Smittestopperne","Hjertekameratene","Lekeklossene","Blålysgjengen"];
+const TEAM_COLORS = ["#0f766e","#d97706","#e8604c","#2563eb","#7c3aed","#15803d"];
+
+/* ---------- Hjelpere ---------- */
+function stokk(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+const $=id=>document.getElementById(id);
+
+function blook(color,shape,size){
+  const bodies=[
+    `<circle cx="50" cy="56" r="38" fill="${color}"/>`,
+    `<rect x="14" y="20" width="72" height="72" rx="20" fill="${color}"/>`,
+    `<path d="M50 8 C70 34 88 48 88 64 A38 38 0 0 1 12 64 C12 48 30 34 50 8Z" fill="${color}"/>`,
+    `<path d="M14 92 V52 A36 36 0 0 1 86 52 V92 L74 82 L62 92 L50 82 L38 92 L26 82 Z" fill="${color}"/>`,
+    `<path d="M50 10 L86 31 L86 73 L50 94 L14 73 L14 31Z" fill="${color}"/>`,
+    `<circle cx="24" cy="26" r="11" fill="${color}"/><circle cx="76" cy="26" r="11" fill="${color}"/><ellipse cx="50" cy="58" rx="40" ry="34" fill="${color}"/>`
+  ];
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true">${bodies[shape%6]}
+    <circle cx="37" cy="54" r="10" fill="#fff"/><circle cx="63" cy="54" r="10" fill="#fff"/>
+    <circle cx="39" cy="56" r="4.5" fill="#1f2937"/><circle cx="65" cy="56" r="4.5" fill="#1f2937"/>
+    <path d="M40 72 Q50 80 60 72" stroke="#1f2937" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+function chestSVG(){
+  return `<svg viewBox="0 0 120 104" aria-hidden="true">
+    <g class="glow"><circle cx="60" cy="50" r="40" fill="#fde68a" opacity=".7"/>
+      <path d="M60 4 L64 18 M30 14 L38 26 M90 14 L82 26 M16 40 L28 44 M104 40 L92 44" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/></g>
+    <rect x="12" y="48" width="96" height="48" rx="7" fill="#b45309"/>
+    <rect x="12" y="48" width="96" height="10" fill="#92400e"/>
+    <rect x="52" y="48" width="16" height="48" fill="#f59e0b"/>
+    <rect x="54" y="60" width="12" height="14" rx="3" fill="#fde68a"/>
+    <g class="lid">
+      <path d="M12 50 V36 Q12 18 60 18 Q108 18 108 36 V50 Z" fill="#d97706"/>
+      <rect x="52" y="19" width="16" height="31" fill="#fbbf24"/>
+      <path d="M12 50 V36 Q12 18 60 18 Q108 18 108 36 V50 Z" fill="none" stroke="#92400e" stroke-width="3"/>
+    </g>
+  </svg>`;
+}
+
+/* ---------- Tilstand ---------- */
+const S = {
+  phase:"setup", nTeams:4, nQ:12, time:20,
+  names:DEFAULT_NAMES.slice(),
+  teams:[], qs:[], qi:0, cur:null,
+  correct:new Set(), queue:[], qpos:0, chestRes:null, chestPicked:null,
+  timerLeft:0, timerId:null, bumped:null
+};
+
+/* ---------- Kistetrekning ---------- */
+const OUTCOMES=[
+  {k:"add",v:10,w:22},{k:"add",v:20,w:20},{k:"add",v:30,w:12},{k:"add",v:50,w:6},
+  {k:"double",w:8},{k:"steal",w:10},{k:"swap",w:5},{k:"lose",v:10,w:9},{k:"none",w:8}
+];
+function trekk(){
+  const tot=OUTCOMES.reduce((s,o)=>s+o.w,0);let r=Math.random()*tot;
+  for(const o of OUTCOMES){if((r-=o.w)<0)return Object.assign({},o);}
+  return {k:"add",v:10};
+}
+
+/* ---------- Render ---------- */
+function render(){
+  renderDots(); renderBoard();
+  const m=$("main");
+  if(S.phase==="setup") m.innerHTML=viewSetup();
+  else if(S.phase==="question"||S.phase==="reveal") m.innerHTML=viewQuestion();
+  else if(S.phase==="chest") m.innerHTML=viewChest();
+  else if(S.phase==="end") m.innerHTML=viewEnd();
+  $("app").classList.toggle("solo",S.phase==="setup"||S.phase==="end");
+  $("board").hidden=(S.phase==="setup"||S.phase==="end");
+}
+
+function renderDots(){
+  const d=$("dots");
+  if(S.phase==="setup"){d.innerHTML="";return;}
+  d.innerHTML=S.qs.map((_,i)=>`<i class="${i<S.qi||S.phase==="end"?"done":(i===S.qi?"now":"")}"></i>`).join("");
+}
+
+function sortedTeams(){return S.teams.map((t,i)=>Object.assign({i},t)).sort((a,b)=>b.score-a.score);}
+
+function renderBoard(){
+  if(!S.teams.length){$("board").innerHTML="";return;}
+  const st=sortedTeams(), top=st[0].score;
+  $("board").innerHTML=`<h3>Poengtavle</h3><ol>${st.map(t=>`
+    <li class="${t.score===top&&top>0?"lead":""} ${S.bumped===t.i?"bump":""}">
+      ${blook(t.color,t.i,34)}<span class="nm">${esc(t.name)}</span>
+      <span class="sc"><span class="coin"></span>${t.score}</span></li>`).join("")}</ol>`;
+  S.bumped=null;
+}
+
+function viewSetup(){
+  const names=S.names.slice(0,S.nTeams).map((n,i)=>`
+    <div class="teamin">${blook(TEAM_COLORS[i],i,40)}
+      <input data-team="${i}" value="${esc(n)}" maxlength="24" aria-label="Navn på lag ${i+1}"></div>`).join("");
+  const seg=(key,vals,lab)=>`<div class="seg">${vals.map(v=>`<button type="button" data-set="${key}" data-val="${v}" class="${S[key]===v?"on":""}">${lab?lab(v):v}</button>`).join("")}</div>`;
+  return `<div class="card">
+    <div class="hero">
+      <svg width="86" height="86" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="31" fill="#ccfbf1"/>
+        <rect x="10" y="32" width="44" height="22" rx="4" fill="#b45309"/>
+        <path d="M10 34 V28 Q10 18 32 18 Q54 18 54 28 V34 Z" fill="#d97706"/>
+        <rect x="27" y="21" width="10" height="3.5" rx="1" fill="#fff"/><rect x="30.25" y="17.75" width="3.5" height="10" rx="1" fill="#fff"/>
+        <rect x="28" y="37" width="8" height="9" rx="2" fill="#fde68a"/>
+      </svg>
+      <div><h1>Skattejakt: Helse og oppvekst</h1>
+      <p>Et lagspill om utdanningen og yrkene – for deg som vurderer Helse- og oppvekstfag.</p></div>
+    </div>
+    <div class="howto"><b>Slik spiller dere:</b> Del klassen i lag. Les spørsmålet sammen og bli enige i laget. Når tiden er ute, viser hvert lag svaret med fingrene (1, 2, 3 eller 4). Lagene som svarte riktig, får åpne en skattekiste. Kistene kan gi gull – men også dobling, tyveri, bytte eller tap!</div>
+    <div class="row">
+      <div class="field"><label>Antall lag</label>${seg("nTeams",[2,3,4,5,6])}</div>
+      <div class="field"><label>Antall spørsmål</label>${seg("nQ",[8,12,QUESTIONS.length],v=>v===12?"12 (ca. 10 min)":v===QUESTIONS.length?"Alle ("+v+")":v)}</div>
+      <div class="field"><label>Tid per spørsmål</label>${seg("time",[15,20,30,0],v=>v?v+" sek":"Uten tid")}</div>
+    </div>
+    <div class="field" style="margin-bottom:8px"><label>Lagnavn (trykk for å endre)</label></div>
+    <div class="teams">${names}</div>
+    <div class="actions"><button class="big" id="startBtn" type="button">Start skattejakten</button></div>
+  </div>`;
+}
+
+function viewQuestion(){
+  const c=S.cur, rev=S.phase==="reveal";
+  const opts=c.opts.map((o,i)=>`<button type="button" class="opt c${i} ${rev?(o.ok?"right":"dim"):""}" tabindex="-1"><span class="n">${i+1}</span><span>${esc(o.t)}</span></button>`).join("");
+  let bottom="";
+  if(!rev){
+    bottom=`<div class="actions"><button class="big teal" id="revealBtn" type="button">Vis riktig svar</button>
+      ${S.time?`<button class="big ghost" id="pauseBtn" type="button">${S.timerId?"Pause":"Fortsett"}</button>`:""}</div>`;
+  }else{
+    const tog=S.teams.map((t,i)=>`<button type="button" class="tog ${S.correct.has(i)?"on":""}" data-tog="${i}" aria-pressed="${S.correct.has(i)}">
+      ${blook(t.color,i,30)}<span>${esc(t.name)}</span><span class="ck">${S.correct.has(i)?"✓":""}</span></button>`).join("");
+    bottom=`<div class="fact"><b>Visste du?</b> ${esc(c.f)}</div>
+      <div class="who"><h3>Hvilke lag svarte riktig?</h3><p class="sub">Trykk på lagene som viste riktig tall.</p>
+      <div class="toggles">${tog}</div></div>
+      <div class="actions"><button class="big" id="toChestBtn" type="button">${S.correct.size?"Åpne skattekister":"Ingen svarte riktig – neste spørsmål"}</button></div>`;
+  }
+  const tLeft=Math.ceil(S.timerLeft);
+  return `<div class="card">
+    <div class="qhead"><span class="pill">Spørsmål ${S.qi+1} av ${S.qs.length}</span>
+      ${S.time&&!rev?`<span class="timetxt ${S.timerLeft<=0?"out":""}" id="ttxt">${S.timerLeft<=0?"Vis svaret!":tLeft}</span>`:""}</div>
+    ${S.time&&!rev?`<div class="timer"><div id="tbar" class="${S.timerLeft<=5?"low":""}" style="width:${Math.max(0,S.timerLeft/S.time*100)}%"></div></div>`:""}
+    <div class="qtext">${esc(c.q)}</div>
+    <div class="opts">${opts}</div>
+    ${bottom}
+  </div>`;
+}
+
+function viewChest(){
+  const ti=S.queue[S.qpos], t=S.teams[ti], r=S.chestRes, last=S.qpos===S.queue.length-1;
+  const chests=[0,1,2].map(i=>`<button type="button" class="chest ${S.chestPicked===i?"open":""} ${S.chestPicked!==null&&S.chestPicked!==i?"faded":""}" data-chest="${i}" ${S.chestPicked!==null?"disabled":""} aria-label="Kiste ${i+1}">
+    ${chestSVG()}<span class="lbl">Kiste ${i+1}</span></button>`).join("");
+  let res="";
+  if(r){
+    if(r.needTarget){
+      const others=S.teams.map((o,i)=>({o,i})).filter(x=>x.i!==ti);
+      res=`<div class="result wild"><div><div class="big-t">${r.k==="steal"?"Tyveri! Stjel 25 % fra et annet lag":"Bytt! Bytt poeng med et annet lag"}</div>
+        <p>Velg hvilket lag dere vil ${r.k==="steal"?"stjele fra":"bytte med"}.</p></div></div>
+        <div class="targets">${others.map(x=>`<button type="button" class="target" data-target="${x.i}">${blook(x.o.color,x.i,28)}<span>${esc(x.o.name)}</span><span class="sc">${x.o.score}</span></button>`).join("")}</div>`;
+    }else{
+      res=`<div class="result ${r.cls}">${blook(t.color,ti,54)}<div><div class="big-t">${r.title}</div><p>${r.text}</p></div></div>
+        <div class="actions"><button class="big" id="nextBtn" type="button">${last?(S.qi===S.qs.length-1?"Se vinneren":"Neste spørsmål"):"Neste lag"}</button></div>`;
+    }
+  }
+  return `<div class="card">
+    <div class="chesthead">${blook(t.color,ti,56)}<h2>${esc(t.name)}: velg en kiste!</h2></div>
+    <p class="chestsub">${S.queue.length>1?`Lag ${S.qpos+1} av ${S.queue.length} som svarte riktig.`:"Dere var det eneste laget som svarte riktig!"}</p>
+    <div class="chests">${chests}</div>${res}
+  </div>`;
+}
+
+function viewEnd(){
+  const st=sortedTeams();
+  const order=[st[1],st[0],st[2]].filter(Boolean);
+  const pods=order.map(t=>{
+    const place=st.indexOf(t)+1;
+    return `<div class="pod p${place}">${blook(t.color,t.i,place===1?78:58)}<div class="nm">${esc(t.name)}</div>
+      <div class="pts"><span class="coin"></span>${t.score}</div><div class="block">${place}</div></div>`;}).join("");
+  const rest=st.slice(3).map((t,k)=>`<li>${k+4}. ${esc(t.name)} – ${t.score}</li>`).join("");
+  return `<div class="card" style="text-align:center">
+    <h1 style="color:var(--teal-d);font-size:clamp(1.6rem,3.6vw,2.4rem)">Gratulerer, ${esc(st[0].name)}!</h1>
+    <div class="podium">${pods}</div>
+    ${rest?`<ul style="list-style:none;padding:0;margin:0 0 16px;color:var(--muted)">${rest}</ul>`:""}
+    <div class="endnote" style="text-align:left"><b>Lurer du på mer?</b> Snakk med rådgiveren din, eller spør noen som går Helse- og oppvekstfag, om hvordan det er. På vilbli.no og utdanning.no finner du alle Vg2-løpene og yrkene.</div>
+    <div class="actions" style="justify-content:center"><button class="big" id="againBtn" type="button">Spill igjen</button></div>
+  </div>`;
+}
+
+/* ---------- Spillflyt ---------- */
+function startGame(){
+  S.teams=S.names.slice(0,S.nTeams).map((n,i)=>({name:(n.trim()||DEFAULT_NAMES[i]),score:0,color:TEAM_COLORS[i]}));
+  S.qs=stokk(QUESTIONS).slice(0,S.nQ);
+  S.qi=0; loadQuestion();
+}
+function loadQuestion(){
+  const q=S.qs[S.qi];
+  let opts=q.a.map((t,i)=>({t,ok:i===0}));
+  if(q.tf){const ord=q.order||["Sant","Usant"];opts=ord.map(t=>opts.find(o=>o.t===t));}
+  else opts=stokk(opts);
+  S.cur={q:q.q,f:q.f,opts};
+  S.correct=new Set(); S.phase="question";
+  S.timerLeft=S.time; render(); startTimer();
+}
+function startTimer(){
+  stopTimer(); if(!S.time||S.timerLeft<=0) return;
+  S.timerId=setInterval(()=>{
+    S.timerLeft-=0.1;
+    const bar=$("tbar"), tx=$("ttxt");
+    if(S.timerLeft<=0){S.timerLeft=0;stopTimer();render();return;}
+    if(bar){bar.style.width=(S.timerLeft/S.time*100)+"%";bar.classList.toggle("low",S.timerLeft<=5);}
+    if(tx) tx.textContent=Math.ceil(S.timerLeft);
+  },100);
+  const pb=$("pauseBtn"); if(pb) pb.textContent="Pause";
+}
+function stopTimer(){if(S.timerId){clearInterval(S.timerId);S.timerId=null;}}
+function reveal(){stopTimer();S.phase="reveal";render();}
+function toChests(){
+  if(!S.correct.size){nextQuestion();return;}
+  S.queue=stokk([...S.correct]); S.qpos=0; S.chestRes=null; S.chestPicked=null; S.phase="chest"; render();
+}
+function pickChest(i){
+  if(S.chestPicked!==null) return;
+  S.chestPicked=i;
+  const ti=S.queue[S.qpos], t=S.teams[ti];
+  let o=trekk();
+  const others=S.teams.filter((_,k)=>k!==ti);
+  if(o.k==="steal"&&others.every(x=>x.score===0)) o={k:"add",v:20,note:"Ingen andre lag har poeng å stjele – dere får 20 i stedet."};
+  if(o.k==="swap"&&!others.some(x=>x.score>t.score)) o={k:"add",v:20,note:"Dere leder allerede – ingen vits å bytte. Dere får 20 i stedet."};
+  if(o.k==="steal"||o.k==="swap"){S.chestRes={k:o.k,needTarget:true};render();return;}
+  const before=t.score;
+  if(o.k==="add"){t.score+=o.v;S.chestRes={cls:"good",title:`+${o.v} gull!`,text:o.note||"Pengene går rett i kista."};}
+  else if(o.k==="double"){t.score*=2;S.chestRes={cls:"wild",title:"Dobbelt opp!",text:before?`Poengene gikk fra ${before} til ${t.score}.`:"Dobbelt av null er dessverre fortsatt null …"};}
+  else if(o.k==="lose"){t.score=Math.max(0,t.score-o.v);S.chestRes={cls:"bad",title:`Au! −${before-t.score} gull`,text:before?"Kista hadde hull i bunnen.":"Heldigvis hadde dere ingenting å miste ennå."};}
+  else {S.chestRes={cls:"meh",title:"Tom kiste",text:"Bare støv og en gammel plasterlapp."};}
+  S.bumped=ti; render();
+}
+function pickTarget(k){
+  const ti=S.queue[S.qpos], t=S.teams[ti], o=S.teams[k];
+  if(S.chestRes.k==="steal"){
+    const amt=Math.ceil(o.score*0.25); o.score-=amt; t.score+=amt;
+    S.chestRes={cls:"wild",title:`Stjal ${amt} gull!`,text:`${esc(t.name)} tok ${amt} fra ${esc(o.name)}.`};
+  }else{
+    const a=t.score; t.score=o.score; o.score=a;
+    S.chestRes={cls:"wild",title:"Byttet!",text:`${esc(t.name)} og ${esc(o.name)} byttet poeng.`};
+  }
+  S.bumped=ti; render();
+}
+function nextAfterChest(){
+  if(S.qpos<S.queue.length-1){S.qpos++;S.chestRes=null;S.chestPicked=null;render();}
+  else nextQuestion();
+}
+function nextQuestion(){
+  if(S.qi<S.qs.length-1){S.qi++;loadQuestion();}
+  else {S.phase="end";render();confetti();}
+}
+function confetti(){
+  const cols=["#0f766e","#d97706","#e8604c","#2563eb","#fbbf24","#7c3aed"];
+  for(let i=0;i<70;i++){
+    const c=document.createElement("div");c.className="confetti";
+    c.style.left=Math.random()*100+"vw";c.style.background=cols[i%cols.length];
+    c.style.animationDuration=(2.2+Math.random()*2)+"s";c.style.animationDelay=(Math.random()*.8)+"s";
+    document.body.appendChild(c);setTimeout(()=>c.remove(),5200);
+  }
+}
+
+/* ---------- Modal ---------- */
+function openModal(html){$("modalBox").innerHTML=html;$("modal").hidden=false;window.scrollTo(0,0);}
+function closeModal(){$("modal").hidden=true;}
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal"||e.target.dataset.close!==undefined)closeModal();});
+$("srcBtn").addEventListener("click",()=>openModal(`<h2>Kilder</h2>
+  <ul class="refs">
+  <li>Fylkeskommunene. (u.å.). <i>Vilbli.no – Helse- og oppvekstfag</i>. <a href="https://www.vilbli.no" target="_blank" rel="noopener">https://www.vilbli.no</a></li>
+  <li>Direktoratet for høyere utdanning og kompetanse. (u.å.). <i>Utdanning.no – yrker og utdanninger</i>. <a href="https://utdanning.no" target="_blank" rel="noopener">https://utdanning.no</a></li>
+  <li>Helsedirektoratet. (u.å.). <i>Anbefalinger om fysisk aktivitet for barn og unge</i>. <a href="https://www.helsedirektoratet.no" target="_blank" rel="noopener">https://www.helsedirektoratet.no</a></li>
+  <li>Norsk Resuscitasjonsråd. (u.å.). <i>Retningslinjer for hjerte-lunge-redning</i>. <a href="https://nrr.org" target="_blank" rel="noopener">https://nrr.org</a></li>
+  <li>NDLA. (u.å.). <i>Helse- og oppvekstfag Vg1</i>. <a href="https://ndla.no" target="_blank" rel="noopener">https://ndla.no</a></li>
+  </ul>
+  <div class="actions"><button class="big teal" type="button" data-close>Lukk</button></div>`));
+$("restartBtn").addEventListener("click",()=>{
+  if(S.phase==="setup") return;
+  openModal(`<h2>Starte på nytt?</h2><p>Poengene nullstilles, og dere kommer tilbake til startsiden. Lagnavnene blir husket.</p>
+    <div class="actions"><button class="big" type="button" id="confirmRestart">Ja, start på nytt</button><button class="big ghost" type="button" data-close>Avbryt</button></div>`);
+});
+
+/* ---------- Hendelser ---------- */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.id==="confirmRestart"){closeModal();stopTimer();S.phase="setup";S.teams=[];render();return;}
+  if(b.dataset.set){const v=+b.dataset.val;S[b.dataset.set]=v;render();return;}
+  if(b.id==="startBtn"){startGame();return;}
+  if(b.id==="revealBtn"){reveal();return;}
+  if(b.id==="pauseBtn"){if(S.timerId){stopTimer();b.textContent="Fortsett";}else startTimer();return;}
+  if(b.dataset.tog!==undefined){const i=+b.dataset.tog;S.correct.has(i)?S.correct.delete(i):S.correct.add(i);render();return;}
+  if(b.id==="toChestBtn"){toChests();return;}
+  if(b.dataset.chest!==undefined){pickChest(+b.dataset.chest);return;}
+  if(b.dataset.target!==undefined){pickTarget(+b.dataset.target);return;}
+  if(b.id==="nextBtn"){nextAfterChest();return;}
+  if(b.id==="againBtn"){S.phase="setup";S.teams=[];render();return;}
+});
+document.addEventListener("input",e=>{
+  if(e.target.dataset.team!==undefined) S.names[+e.target.dataset.team]=e.target.value;
+});
+
+render();
+</script>
+</body>
+</html>
