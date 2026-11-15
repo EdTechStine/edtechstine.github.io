@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spill og prateroboter – EdTechStine</title>
+<meta name="description" content="Interaktive læringsspill og prateroboter fra klasserommet – prøv selv.">
+<link rel="icon" href="/assets/logo-ikon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="/"><img src="/assets/logo-ikon.png" alt="EdTechStine logo"> EdTechStine</a>
+    <ul>
+      <li><a href="/kurs/">Kurs og foredrag</a></li>
+      <li><a href="/spill/" class="active">Spill og prateroboter</a></li>
+      <li><a href="/ressurser/">Ressurser</a></li>
+      <li><a href="/om/">Om meg</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">Forside</a> / Spill og prateroboter</div>
+    <h1>Prøv <em>selv</em></h1>
+    <p>Prateroboter og læringsspill jeg har laget og testet i egen undervisning på barne- og ungdomsarbeiderfag. Spill direkte her, eller åpne spillene i fullskjerm og bruk dem med egne elever.</p>
+  </div>
+</section>
+
+<section id="demoer" class="alt" style="padding-top:64px">
+  <div class="wrap">
+    <div class="demo-grid">
+      <div class="demo-card chat-card">
+        <span class="demo-tag">Praterobot</span>
+        <h3>Praksisoppgave-veilederen</h3>
+        <p>Veileder elever på vg2/vg3 barne- og ungdomsarbeiderfag steg for steg gjennom å skrive en praksisoppgave etter den didaktiske relasjonsmodellen – uten å gi elevene ferdige svar.</p>
+        <div class="chat-window" id="chat-window-1"></div>
+        <button class="chat-replay" onclick="playChat('chat-window-1', chatScript1)">▶ Spill av samtalen</button>
+      </div>
+      <div class="demo-card chat-card">
+        <span class="demo-tag">Praterobot</span>
+        <h3>Etter fullført praksisoppgave – evaluering</h3>
+        <p>Veileder elever på vg2/vg3 barne- og ungdomsarbeiderfag gjennom en strukturert refleksjon etter gjennomført aktivitet, basert på den didaktiske relasjonsmodellen.</p>
+        <div class="chat-window" id="chat-window-2"></div>
+        <button class="chat-replay" onclick="playChat('chat-window-2', chatScript2)">▶ Spill av samtalen</button>
+      </div>
+      <div class="demo-card chat-card">
+        <span class="demo-tag">Læringsspill</span>
+        <h3>Scenario-treneren</h3>
+        <p>Elever på VG3 barne- og ungdomsarbeiderfag øver på virkelige situasjoner knyttet til brukermedvirkning og rettigheter i arbeidslivet, og får umiddelbar, konkret tilbakemelding.</p>
+        <div class="game-frame-wrap">
+          <iframe src="/scenario-trener.html" title="Scenario-treneren" loading="lazy"></iframe>
+        </div>
+        <div class="game-links">
+          <a href="/scenario-trener.html" target="_blank" rel="noopener">Åpne i fullskjerm →</a>
+        </div>
+      </div>
+      <div class="demo-card chat-card">
+        <span class="demo-tag">Læringsspill</span>
+        <h3>Sorter det riktig</h3>
+        <p>Dra-og-slipp-spill der elever på VG3 barne- og ungdomsarbeiderfag sorterer begreper knyttet til rettigheter, plikter og medvirkning i tre runder med økende vanskelighetsgrad.</p>
+        <div class="game-frame-wrap">
+          <iframe src="/sorter-spillet.html" title="Sorter det riktig" loading="lazy"></iframe>
+        </div>
+        <div class="game-links">
+          <a href="/sorter-spillet.html" target="_blank" rel="noopener">Åpne i fullskjerm →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="wrap">
+    <div class="contact-box">
+      <div>
+        <h2>La oss samarbeide</h2>
+        <p>Ta kontakt om du ønsker et foredrag eller en workshop om KI i klasserommet, eller trenger hjelp til å utvikle egne interaktive læringsspill eller prateroboter.</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:stinemarisg@gmail.com">✉ stinemarisg@gmail.com</a>
+        <a href="https://www.linkedin.com/in/stine-mari-s%C3%A6grov-1a8908323/" target="_blank" rel="noopener">in LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 EdTechStine — Digital pedagog: KI i klasserommet</div>
+</footer>
+<script>
+  const chatScript1 = [
+    {role:'bot', text:'Hei! Jeg kan veilede deg gjennom prosessen med å skrive en praksisoppgave steg for steg. 📝 Skal vi starte med navnet ditt og dato for oppstart av planen?'},
+    {role:'user', text:'Hei! Jeg heter Emma, og jeg starter planen 12. mars.'},
+    {role:'bot', text:'Bra, Emma! 😊 Da går vi videre. Hva heter aktiviteten du ønsker å gjennomføre?'},
+    {role:'user', text:'Jeg vil kalle den "Fingermaling i naturen".'},
+    {role:'bot', text:'Fint navn! Kan du si litt om hvorfor akkurat denne aktiviteten passer godt for barnegruppen din?'}
+  ];
+
+  const chatScript2 = [
+    {role:'bot', text:'Hei! Jeg kan veilede deg gjennom prosessen med å skrive en refleksjon etter at du har gjennomført aktiviteten din. 📝 Var planen din oversiktlig? Hva synes du gikk bra, og var det noe som var mindre bra?'},
+    {role:'user', text:'Planen var ganske oversiktlig, men jeg brukte litt for lang tid på forberedelsene.'},
+    {role:'bot', text:'Bra observasjon! 😊 Da går vi videre. Hva har du lykkes med? Prøv å være konkret.'},
+    {role:'user', text:'Jeg synes jeg lyktes med å få barna engasjert i fingermalingen.'},
+    {role:'bot', text:'Fint! Hva tror du var grunnen til at akkurat den aktiviteten engasjerte dem så mye?'}
+  ];
+
+  function playChat(windowId, script){
+    const win = document.getElementById(windowId);
+    win.innerHTML = '';
+    let delay = 0;
+    script.forEach((step) => {
+      const typingTime = 500 + Math.min(step.text.length * 12, 900);
+      delay += 400;
+      setTimeout(() => {
+        const typing = document.createElement('div');
+        typing.className = 'typing';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        win.appendChild(typing);
+        win.scrollTop = win.scrollHeight;
+        setTimeout(() => {
+          typing.remove();
+          const msg = document.createElement('div');
+          msg.className = 'msg ' + step.role;
+          msg.textContent = step.text;
+          win.appendChild(msg);
+          win.scrollTop = win.scrollHeight;
+        }, typingTime);
+      }, delay);
+      delay += typingTime;
+    });
+  }
+
+  // Spill av automatisk første gang demoet blir synlig
+  function setupAutoplay(windowId, script){
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if(entry.isIntersecting){
+          playChat(windowId, script);
+          observer.disconnect();
+        }
+      });
+    }, {threshold:0.4});
+    const el = document.getElementById(windowId);
+    if(el) observer.observe(el);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    setupAutoplay('chat-window-1', chatScript1);
+    setupAutoplay('chat-window-2', chatScript2);
+  });
+</script>
+</body>
+</html>
